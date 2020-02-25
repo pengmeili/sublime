@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>gulp 使用</title>
+</head>
+<body>
+	1. 全局安装 gulp
+		$ npm install --global gulp
+
+		如果是第一次安装：sudo npm install -g gulp  需要输入密码 
+
+	2. npm init 创建一个package.json	
+
+	3. 作为项目的开发依赖（devDependencies）安装：
+		$ npm install --save-dev gulp
+
+	4. 在项目根目录下创建一个名为 gulpfile.js 的文件：
+		var gulp = require('gulp');
+
+		gulp.task('default', function() {
+		  // 将你的默认的任务代码放在这
+		});
+
+	5. 运行 gulp	
+		gulp	
+
+	6. 插件安装（本地开发环境安装）  https://gulpjs.com/plugins/ 插件大全
+		npm install gulp-less --save-dev
+
+	7. 前端常用插件
+		1）gulp-jshint           //jshint是用来检测javascript的语法错误的
+		2）gulp-less         	//对less进行自动编译成css
+		3）gulp-minify-css   	//css 压缩
+		4）gulp-load-plugins     //一次性加载package.json中的所有插件
+		5）gulp-clean 			//清空文件夹
+		6）gulp-uglify  			//对 js 文件进行压缩
+		7）gulp-watch			//监听文件自动编译
+		8）gulp-rename			//重命名文件
+ 
+		9）gulp-autoprefixer		//https://blog.csdn.net/wu_xiaozhou/article/details/52863115
+		10）del  //npm install gulp@3.9.1 del --save-dev  删除文件
+
+
+
+		npm install gulp@3.9.1 --save-dev
+
+		npm uninstall 插件名  //删除某个插件
+
+</body>
+</html>

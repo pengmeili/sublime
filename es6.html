@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>es6</title>
+</head>
+<body>
+	1、常量
+	2、作用域
+	3、箭头函数
+	4、默认参数
+	5、对象代理
+	<!--
+		var 使用var定义一个全局变量，属于window，let、const 不同
+
+		let
+		1、没有预解析，没有变量提升，作用域为块
+			必须先定义再使用
+
+		2、同一个作用域里不能重复定义
+		{
+			let a = 12;
+			{
+				let a = 5;
+				console.log(a)
+			}
+			console.log(a)
+		}
+		3、for循环，for循环里面是父级作用域，里面又一人可以重置定义
+
+		if(){}
+		for(){}
+		while(){}
+
+		eg:
+		let a = 13;
+		function fn(){
+			alert(a) // TDZ开始 暂时性死区
+			let a= 5;// TDZ结束
+		}
+		fn();
+
+
+		const:申明常量不能修改，特性和let一样
+				定义是必须要赋值
+				可以使用对象的特性push等
+
+				Object.freeze(对象)： 不能修改
+
+				以后var替换成let\
+
+
+		结构赋值：(非常有用)
+		let [a,b,c] = [12,5,6];
+		let [a,[b,c]] = [12,[5,6]]
+		console.log(a,b,c)
+
+		let json = {name: 'pengml',age:18,job:'码农'}
+		let {name,age,job} = json;
+
+		let {name,age,job} = {name: 'pengml',age:18,job:'码农'}
+		console.log(name,age,job)
+		let {name:n,age:a,job:j} = {name: 'pengml',age:18,job:'码农'} //相当于给每个字段取个别名
+		console.log(n,a,j)
+
+		解构时可以给默认值：
+		let [a,b,c='默认值'] = ['aaa','bbb'] //aaa bbb 默认值
+		let [a,b,c='默认值'] = ['aaa','bbb',null] //aaa bbb null
+		let [a,b,c='默认值'] = ['aaa','bbb',undefined] //aaa bbb 默认值
+		console.log(a,b,c)
+
+		let a;
+		({a} = {a:'apple',b:'banana'})
+		console.log(a) // apple
+
+		应用：
+			1、交换两个数的位置：
+			let a = 12;
+			let b = 5;
+
+			[a,b] = [b,a]
+			console.log(a,b) // 5 12
+
+			2、位置应用：
+				function getPos(){
+					return {
+						left: 10,
+						top: 20
+					}
+				}
+
+				let {left,top:_top} = getPos();
+				console.log(left,_top)  //10 20
+
+			3、函数传参
+				function show({a,b='默认'}){
+					console.log(a,b)
+				}
+				show({a:1,b:2})
+
+
+			字符串模板：
+				`${变量名}` 可以随意换行
+				let name = 'brain';
+				let age = 5;
+				let str = '这个人叫'+name+'，今年'+age+'岁';
+				let str = `这个人叫${name}，今年${age}岁`;
+				console.log(str)
+
+				字符串查找：
+					str.indexOf() 返回是索引的位置或-1
+					str.includes(str)  返回是true/false
+
+					eg:
+						let str = 'apple banana orange';
+						console.log(str.includes('banana'))
+
+						判断浏览器：
+						if(navigator.userAgent.includes('Chrome')){
+							console.log('是chrome')
+						} else {
+							console.log('不是chrome')
+						}
+
+						字符串是否是以xxx开关
+						str.startsWith('sss')
+
+						字符串是否为xx结尾： 图片格式判断、地址判断
+						str.endsWith()
+
+						重复次数：
+						str.repeat(n)
+
+						字符串填充:
+							str.padStart(整个字符串长度，填充东西) 往前填充
+							str.padEnd(整个字符串长度，填充东西)  往后填充
+
+							let str = 'a';
+							let padStr = 'ssss';
+							console.log(str.padStart(str.length+padStr.length,padStr)) //ssssa
+
+							let str = 'apple';
+							let padStr = '111';
+							console.log(str.padEnd(str.length+padStr.length,padStr)) // apple111
+
+					函数变化：
+						1、函数参数默认值
+							function show(a='欢迎',b='mmr'){
+								console.log(a,b)
+							}
+							show('welcome','brain') // welcome brain
+							show('welcome','') // welcome brain
+							show('welcome') // welcome mmr
+							show(undefined,'brain') //欢迎 brain
+
+							function pos({x=0,y=0}={}){
+								console.log(x,y)
+							}
+							pos({x:5,y:6}) // 5 6
+							pos({x:5}) // 5 0
+							pos({y:5}) // 0 5
+							pos({})  // 0 0
+							pos() // 0 0
+
+						2、函数参数默认已经定义了，不能再使用let,const声明了
+							function show(a=18){
+								let a = 101;  // 错误不能再声明了
+								console.log(a)
+							}
+							show(10)
+
+						扩展运算符、Rest运算符
+							...
+								展开数组
+								eg:
+									let arr = ['apple','orange','banana'];
+									console.log(...arr) // apple orange banana
+
+									复制数组：
+										let arr = [1,2,3,4];
+										let arr1 = [...arr];
+										let arr1 = Array.from(arr);
+										console.log(arr1) // [1,2,3,4] arr1数据操作不影响arr
+
+									函数使用：
+										function show(...a){
+											return a.sort();
+										}
+										console.log(show(1,4,6,2)) // [1, 2, 4, 6]
+
+										function show1(a,b,c){
+											console.log(a,b,c)
+										}
+										show1(...[1,3,2]) //1 3 2
+
+										function show2(a,b,...c){ // 只能放在最后
+											console.log(a,b,c)
+										}
+										show2(1,2,3,4,5)
+
+									箭头函数：
+										() => return 东西
+										() => {
+												语句;
+												return 东西
+										}
+
+										注意事项：
+											1、	this指向问题：定义函数所在的对象，不再是运行是所有的对象;
+											2、箭头函数中没有arguments,使用...args
+											3、箭头函数不能当构造函数
+											4、ES2017可以允许最后一个参数带逗号
+
+										function show() {
+											return 1;
+										}
+										show();
+										转换箭头函数：
+										let show = () => 1
+										console.log(show()) // 1
+
+										function add(a,b){
+											return a+b
+										}
+										转换箭头类类函数：
+										let add = (a,b) => a+b
+										console.log(add(1,2)) //3
+
+										let show = (a=1,b=2) => {  // 默认值
+											console.log(a,b);
+											return a + b
+										}
+										console.log(show())
+
+										this的指向问题:
+											let json = {
+												id:1,
+												show: function(){
+													// setTimeout(function(){
+														// console.log(this.id) // undefined 原因是this现在指向的window
+													// })
+													setTimeout(() => {
+														console.log(this.id) // 1 this 指向的是json
+													},1000)
+												}
+											}
+											json.show()
+
+									箭头函数没有arguments，使用...
+										function show(){
+											console.log(arguments)
+										}
+										show(1,2,3) //[1, 2, 3, callee: ƒ, Symbol(Symbol.iterator): ƒ]
+
+										let show = (...args) => {
+											console.log(args)
+										}
+										show(1,2,3) // [1, 2, 3]
+
+										ES2017可以允许最后一个参数带逗号
+											function show(a,b,c,d,){
+												console.log(a,b,c,d)
+											}
+											show(1,2,3,4,) //1 2 3 4
+
+						数组操作：
+							1、arr.forEach()
+								let arr = ['apple','banana','orange'];
+								arr.forEach(function(val,index,arr){
+									console.log(val,index,arr)
+								})
+
+							2、arr.map() // 映射  比较重要
+								正常情况下，需要配合return，返回是一个新的数组，若是没有return，相当于forEach，注意：平时如果要用map，一定要用return
+									let arr = ['apple','banana','orange'];
+									let newArr = arr.map(())
+
+									eg：重新整理数据结构
+										let data = [{title:'aaa',read:100,hot:true},{title:'bbb',read:100,hot:true},{title:'ccc',read:100,hot:true}]
+										let newArr = data.map((item,index) => {
+											let json = {};
+											json.t = item.title;
+											json.read = item.read+200;
+											// json.hot = item.hot === true ?'热点':'非热点';
+											json.hot = item.hot === true && '热点';
+											return json
+										})
+										console.log(newArr)  // [{t:'aaa',read:300,hot:'热点'},{t:'bbb',read:300,hot:'热点'},{t:'ccc',read:300,hot:'热点'}]
+
+
+							3、arr.filter() //过滤 过滤一些不符合条件的数据，如果回调函数返回true,就留下
+									let data = [{title:'aaa',read:100,hot:false},{title:'bbb',read:100,hot:true},{title:'ccc',read:100,hot:true}]
+									let newArr = data.filter((item,index,data) => {
+										return item.hot === true
+									})
+									console.log(newArr) // 返回的是hot为true的两条数据
+
+							4、arr.some() // 类似查找，数据里面某一个元素符合条件就返回true
+								let arr = ['apple','banana','orange'];
+								let a = arr.some((item,index,arr) => {
+									return item === 'apple'
+								})
+								console.log(a) // true
+								封装：
+									let arr = ['apple','banana','orange'];
+									function findInArr(arr, str){
+										return arr.some((item,index) => {
+											return item === str
+										})
+									}
+									findInArr(arr,'apple') // true
+								-----------------------------------------------------
+
+							5、arr.every() // 数组里所有的元素都要符合条件，才返回true
+
+								eg:查看数据中的数是否全部是奇数
+
+								let arr = [1,3,5,7,8];
+								let b = arr.every((item,index,arr) =>{
+									return item%2 === 1
+								})
+								console.log(b)
+
+
+							以上五个方法可以接收两个参数：
+								arr.forEach(循环回调函数,this指向谁)
+
+								let arr = ['apple','banana','orange'];
+								arr.forEach(function(val,index,arr){
+									console.log(this,val,index,arr) // this 指向后面的参数
+								},arr)
+								或是
+								arr.forEach(function(val,index,arr){
+									console.log(this,val,index,arr) // this 指向后面的参数
+								}.bind(123))
+
+								arr.forEach((val,index,arr) =>{
+									console.log(this,val,index,arr) // 箭头函数中不支持this指向
+								})
+-----------------------------------------------------------------------------------
+							6、arr.reduce() //从左往右
+								eg:求和
+									let arr = [1,2,3,4,5,6,7,8,9,10];
+									let a = arr.reduce((prev,cur,index, arr) => {
+										return prev+cur
+									})
+									console.log(a) // 55
+
+								eg：阶乘方法
+									let arr = [2,2,3];
+									let res = arr.reduce((prev,cur,index,arr) => {
+										// return Math.pow(prev,cur)
+										return prev ** cur
+									})
+									console.log(res) // 64
+									******
+									幂次方：
+										console.log(Math.pow(2,3)) //8
+										console.log(2**3) // 8
+
+								7、arr.reduceRight() //从右往左
+
+									let arr = [2,2,3];
+										let res = arr.reduce((prev,cur,index,arr) => {
+											// return Math.pow(prev,cur)
+											return prev ** cur
+										})
+										console.log(res) // 81
+
+								8、for...of...
+									***
+									数组中增加的新特性：
+										arr.keys()  数组的下标
+										arr.entries()  数组的某一项
+
+
+									let arr = ['apple','banana','orange'];
+									for(let val of arr){
+										console.log(val)
+									}
+
+									for(let index of arr.keys()){
+										console.log(index) // 0 1 2
+									}
+
+									for(let item of arr.entries()){
+										console.log(item) // [0, "apple"]  [1, "banana"]   [2, "orange"]
+									}
+
+									for(let [key,val] of arr.entries()){
+										console.log(key,val) //0 "apple" 1 "banana" 2 "orange"
+									}
+
+									9、Array.from() 作用:把类数组(获取一组元素，arguments...)对象转成数组，只要用length属性的就转成数组 Array、json
+										window.onload = function(){
+											let aLi = document.querySelectorAll('li');
+											let arrLi = Array.from('')
+											arrLi.pop();
+											console.log(arrLi) // ['li','li','li']
+										}
+
+										arguments 转数组
+											function show() {
+												let args = Array.from(arguments);
+												args.push(6)
+												console.log(args) // [1, 2, 3, 4, 5, 6]
+											}
+											show(1,2,3,4,5)
+
+											let json = {0:'applay',1:'banana',2:'orange',length: 3};
+											let arr = Array.from(json);
+											console.log(arr) // ["applay", "banana", "orange"]
+
+											Array.of() 把一组值转成数组
+												let arr = Array.of(1,2,3);
+												console.log(arr) //[1, 2, 3]
+
+
+											arr.find()  //找到第一个符合条件的就不再往后找了,如果没有找到就返回undefined
+												let arr = [1,3,12,6,11];
+												let res = arr.find((val,index, arr) => {
+													return val > 10
+												})
+												console.log(res) // 12
+
+											arr.findIndex() // 找的是位置，没有找到返回-1
+
+											arr.fill(填充的内容,开始位置,结束位置) 填充
+												let arr = new Array(5);
+												arr.fill('default');
+												console.log(arr) //["default", "default", "default", "default", "default"]
+
+											在es2016新增的includes()
+												arr.includes() 包含某个字符串，返回true/false
+	********************************************************************************
+						对象
+								json:
+									对象简洁语法(相当有用)：
+									let name = 'brain';
+									let age = 18;
+										let json = {
+											name: name,
+											age: age
+											showA:function(){
+												console.log(this.a)
+											}
+										}
+
+										let json = {
+											name,
+											age,
+											showA(){ // 一定不要写成箭头函数
+												console.log(this.name)
+											}
+										}
+
+							Object.is() 比较两个值是否相等
+								Object.is(NaN,NaN) 处理了，true
+
+							Object.assign(目标对象,source1,source2...) 合并对象
+								作用：复制对象，合并参数
+
+								eg: ajax传参：
+									function ajax(option){
+										let default = {
+											type: 'get',
+											header: '',
+											data: {}
+										}
+										let json = Object.assign({},default,option)
+									}
+
+
+								eg:复制数组：
+									let arr = ['apple','banana'];
+									let arr1 = Object.assign([],arr);
+									arr1.push('orange')
+									console.log(arr) //["apple", "banana"]
+									console.log(arr1) //["apple", "banana", "orange"]
+							Object.keys()
+								let json = {a:1,b:2,c:3};
+								for(let key of Object.keys(json)){
+									console.log(key) // a b c
+								}
+								升级版：
+								let {keys, values,entries} = Object; //解构，本身Object是有keys,values,entries三个方法的
+								let json = {a:1,b:2,c:3};
+								for(let key of keys(json)){
+									console.log(key) // a b c
+								}
+								for(let value of values(json)){
+									console.log(value) // 1 2 3
+								}
+								for(let item of entries(json)){
+									console.log(item) //["a", 1] ["b", 2] ["c", 3]
+								}
+								for(let [key,val] of entries(json)){
+									console.log(key,val) // a 1  b 2  c 3
+								}
+
+							Object.entries()
+							Object.values()
+
+					对象也可以用...
+						eg:
+							let {x,y,...z} = {x:1,y:2,a:1,b:2,c:3}
+							console.log(x,y,z)//1 2 {a: 1, b: 2, c: 3}
+
+							复制json:
+								let json = {x:1,y:2}
+								let json1 = {...json};
+								delete json1.x;
+								console.log(json) //{x:1,y:2}
+								console.log(json1)//{y: 2}
+===========================================================================
+				promise: 承诺，许诺
+					作用：解决异步回调问题
+					语法：
+						let promise = new promise(function(resolve,reject){
+							resolve //成功调用
+							reject // 失败调用
+						})
+						promise.then(res =>{
+							// TODO
+						},err=>{
+							// TODO
+						})
+						promise捕获错误
+						promise.catch(err => {
+							console.log(err)
+						})
+
+						promise最终用法：
+							new Promise().then(res => {
+
+							}).catch(err => {
+
+							})
+
+						eg:
+							let a = 9;
+							let promise = new Promise((resolve,reject) => {
+								if(a === 10) {
+									resolve('成功了！')
+								} else {
+									reject('失败了！')
+								}
+							})
+							promise.then(res => {
+								console.log(res)
+							}).catch(err => {
+								console.log(err)
+							})
+
+					Promise.resolve('aaa') 将现有的东西，转成一个promise对象，resolve状态，成功状态
+						等价于：
+							new Promise(resolve => {
+								resolve('aaa')
+							})
+					Promise.reject('aaa')  将现在东西转成一个promise对象，reject状态，失败状态
+						等价于：
+							new Promise((resolve,reject) => {
+								reject('aaa')
+							})
+
+					*** Promise.all(p1,p2,p3) //把promise打包扔到一个数组里面  还是一个promise对象,必须确保所有的promise对象都是resolve状态
+
+						eg:
+							let p1 = Promise.resolve('111');
+							let p2 = Promise.resolve('222');
+							let p3 = Promise.resolve('333');
+
+							Promise.all([p1,p2,p3]).then(res =>{
+								let [res1,res2,res3] = res
+								console.log(res1,res2,res3) //111 222 333
+							})
+
+					Promise.rece([p1,p2,p3]) 只要有一个成功就返回
+
+					*****
+					promise综合应用：
+
+					let status = 1;
+					let userLogin = (resolve,reject) => {
+						setTimeout(() => {
+							if(status === 1){
+								resolve({data:'登录成功',msg: 'xxx', token: 'xxxxx'})
+							}else{
+								reject('登录失败！')
+							}
+						},2000)
+					};
+
+					let getUserInfo = (resolve,reject) => {
+						setTimeout(() =>{
+							if(status === 1){
+								resolve({data:'获取用户信息成功',msg: 'bbbb',name:'brain',age:18})
+							} else{
+								reject('获取用户信息失败！')
+							}
+						})
+					}
+					new Promise(userLogin).then(res => {
+						console.log('用户登录成功')
+						return new Promise(getUserInfo)
+					}).then(res => {
+						console.log('获取用户信息成功')
+					})
+=============================================================================================
+			模块化：
+				ES6统一了服务端和客户端的模块规范
+					CommonJs   主要服务端 nodeJs required('http')
+					AMD        requireJs、curJs
+					CMD        seaJs
+
+					import {xx} from ddd
+
+				模块化：
+					注意：需要放在服务器环境
+
+					1、如果定义
+						modules/1.js
+						export const a = 12
+					2、如果使用
+						user-module/1.html
+						<script type="module">
+							import '../module/1.js'
+						</script>
+
+						import特点：
+							1) import 可以是相对路径，也可以是绝对路径
+							2) import 模块只会导入一次，无论你引入多少次
+							3) import '../module/1.js' 如果这么用，相当于引入文件
+							4) import 有提升效果，import 会自动提升到顶部首先执行
+							 	console.log(a,b) 还是能出结果，import自动提升了
+								import mod,{show,sum,a,b} from '../modules/4.js'
+							5) 导出去的模块内容，如果里面有定时器更改，外面也会改动，不想common规范缓存
+					3、export default a=12 ,import 的时候不用{} import a from ''  // 3.html、3.js
+
+
+					**import() 动态引入，类似node里面require，返回值为promise对象，可以使用Promise.all()
+						优点：
+							1、按需加载
+							2、可以写在正常的语句中
+							3、路径也可以动态
+						<script type='module'>
+							import('../module/1.js').then(res => {
+								console.log(res.a+res.b)
+							})
+						</script>
+						按需加载：
+							<script type="module">
+								let sign = 1;
+								function config(){
+									switch(sign){
+										case 1:
+											return '../module/1.js';
+											break;
+										case 2:
+											return '../module/2.js'
+											break;
+									}
+								}
+								import(config(1)).then(res =>{
+									// todo
+								})
+							</script>
+							<script type="module">
+								Promise.all([
+									import('../module/1.js'),
+									import('../module/2.js')
+								]).then(([mod1,mod2]) =>{
+									console.log(mod1,mod2)
+								})
+							</script>
+	===============================================================
+			ES2017添加了async await
+				async function main(){
+					const mod1 = await import('../modules/1.js');
+					const mod2 = await import('../modules/2.js');
+					console.log(mod1,mod2);
+
+					const [m1,m2] = await Promise.all([
+						import('../modules/1.js'),
+						import('../modules/2.js')
+					])
+					console.log(m1,m2)
+				}
+	===============================================================
+		'use strict'  严格模式
+	===============================================================
+	class：
+		注意：
+		1、必须先定义后使用，没有函数的提升功能
+		2、ES6里面的this简化了很多
+		--------------------------------------
+		原始写法：	使用函数模拟
+			function Person(name,age){
+				this.name = name;
+				this.age = age;
+			}
+
+			// Person.prototype.showName = function(){
+			//	return `名字为${this.name}`
+			//}
+			//Person.prototype.showAge = function(){
+				//return `年龄为：${this.age}`
+			//}
+			Object.assign(Person.prototype,{
+				showName(){
+					return `名字为${this.name}`
+				},
+				showAge(){
+					return `年龄为：${this.age}`
+				}
+			})
+
+			let p1 = new Person('Brain', 5)
+			console.log(p1.showName()) // 名字为Brain
+			console.log(p1.showAge()) // 名字为18
+		es6写法：
+			const Person = class{
+				constructor(){}
+			}
+			----------------------------
+			class Person{
+				constructor(name,age){ // 构造方法(函数)，调用new，自动执行
+					// console.log(`执行了构造函数，${name},${age}`) //执行了构造函数，Lily,18
+					this.name = name;
+					this.age = age
+				}
+				showName(){
+					return `名字为${this.name}`
+				}
+				showAge(){
+					return `年龄为：${this.age}`
+				}
+			}
+			let p1 = new Person('Lily',18);
+			console.log(p1.showName(),p1.showAge()) //名字为Lily 年龄为：18
+			-----------------------------------------------
+			方法名可以使用变量的形式：
+				let a = 'Brain';
+				let b = 'method';
+				class Person{
+					[a+b](){
+						console.log('dddd')
+					}
+				}
+				let p1 = new Person('Brain', 18)
+				console.log(p1.Brainmethod()) // dddd
+				console.log(p1[a+b]()) // dddd
+
+				json:也可以使用动态变量名：
+						let a = 'test';
+						let b = 'key1';
+						let json = {
+							[a]:'apple',
+							[a+b]:'banana'
+						}
+						console.log
+						console.log(json.test,json.testkey1) // apple banana
+			------------------------------------------------------------
+			** 矫正this的方法
+				1、fn.call(this指向谁,arg1,arg2...)
+				2、fn.apply(this指向谁,[arg1,arg2....])
+				3、fn.bind()
+				eg:
+					class Person{
+						constructor(){
+							this.name = 'Brain'
+							this.showName = this.showName.bind(this) // 添加此名去纠正this的指向
+						}
+						showName(){
+							console.log('this',this); //this Person {name: "Brain", showName: ƒ}
+							return `this name is ${this.name}` //this name is Brain
+						}
+					}
+					let p1 = new Person();
+					let {showName} = p1;
+					console.log(showName())
+			-------------------------------------------------
+				class里面取值(getter)存值(setter)
+					eg:
+						class Person{
+							constructor(){
+
+							}
+							get	aaa(){
+								return `aaa的属性`
+							}
+							set aaa(val){
+								console.log(`设置aaa的属性，值为：${val}`)
+							}
+						}
+						let p1 = new Person();
+						p1.aaa = '123';
+						console.log(p1.aaa)
+		---------------------------------------------------------
+			静态方法：类身上的方法
+				static aa(){}
+				eg:
+				class Person{
+					constructor(){
+
+					}
+					showName(){
+						return `this is showName`
+					}
+					static aaa(){
+						return `这是静态方法`
+					}
+				}
+				let p1 = new Person();
+				console.log(p1.showName()) //this is showName
+				console.log(Person.aaa()) // 这是静态方法
+		------------------------------------------------------------------
+			继承：
+				extends
+					class Student extends Person{}
+					eg:
+						class Person{
+							constructor(name){
+								this.name = name
+							}
+							showName(){
+							console.log(`父类的showName`)
+								return `名字为：${this.name}`
+							}
+						}
+						class Student extends Person{ // 继承Person类
+							constructor(name, skill){
+								super(name); // 执行父级的constructor
+								this.skill = skill;
+							}
+							showName(){
+								super.showName(); //执行父级的方法，如果不加此名会覆盖父级方法
+								console.log(`子集showName`)
+							}
+							showSkill(){
+								return `哥们的技能为：${this.skill}`
+							}
+						}
+						let stu1 = new Student('Brain','学习');
+						console.log(stu1.showName()) // Brain
+						console.log(stu1.showSkill()) // 哥们的技能为学习
+=======================================================================================
+		ES6数据类型：
+			Symbol:
+				定义：用typeof 检测出来的为 symbol，之前是number、string、boolean、Object、undefined、function 6种类型
+					let sym = Symbol('1111');
+				注意：1、不能用new
+							2、返回的是一个唯一的值，做一个key或是私有的东西
+							3、symbol作为json的key,用for in 循环出不来
+								let symbol = Symbol('Brain');
+								let json = {
+									a:'111',
+									[symbol]: 'ccc'
+								}
+								for(let key in json){
+									console.log(key) // a
+								}
+	--------------------------------------------------------------------------------------------------
+		generator	函数：也叫生成器，解决异步问题，深度嵌套问题 async
+			语法：
+				function * show(){
+					yield ''
+				}
+				1、解构赋值
+				2、扩展运算符
+				3、Array.from()
+					console.log(Array.from(gen()))
+
+				function * gen(){
+					yield 'welcome';
+					yield 'to';
+					return 'my home'
+				}
+				let g1 = gen();
+				for(let item of g1){
+					console.log(item) //welcome to  return不会返回
+				}
+				let [a,b] = gen()
+				console.log(a,b) // welcome to
+
+				let [a,...b] = gen()
+				console.log(a,b) // welcome ['to']
+				console.log(...gen()) // welcome to
+
+				console.log(Array.from(gen())) //["welcome", "to"]
+
+				console.log(g1.next()) //{value: "welcome", done: false}
+				console.log(g1.next()) //{value: "to", done: false}
+				console.log(g1.next()) //{value: "my home", done: true}
+
+				应用：	user-module/generator.html
+
+		-----------------------------------------------------------------------
+		解决异步文案：
+			1、回调函数
+			2、事件监听
+			3、发布/订阅
+			4、Promise对象
+
+			generator自动执行库co
+
+	==============================================================================
+		async  /modules/async.js
+			注意：await 都放在try里面比较保险
+			语法：
+			async function fn(){ //表示异步，这个函数里面有异步任务
+				let result = await xxxx // 表示后面结果需要等待
+			}
+
+			特点：
+				1、await 只能放到async函数中
+				2、相比generator语法更强
+				3、await后面可以是promise对象，也可以是数字、字符串、布尔
+				4、async函数返回是一个promise对象
+				5、只要await语句后面promise状态变成reject，那么整个async函数会中断执行
+					1)如何解决async函数中抛出错误：不影响后续代码
+						try{}catch(e){}
+					2)promise本身catch
+					async function fn(){
+						await Promise.reject('err').catch(err=>{
+							console.log(err)
+						})
+						let a = await Promise.resolve('success');
+						console.log(a)
+					}
+					fn().then(res=>{
+						console.log(res)
+					})
+
+					async function fn1(){
+						try{
+							await Promise.reject('err');
+						}catch(e){}
+						let a = await Promise.resolve('success');
+						console.log(a)
+					}
+					fn1().then(res=>{
+						console.log(res)
+					}).catch(err =>{
+						console.log(err)
+					})
+
+		前端框架koa2
+=====================================================
+	数据结构：
+		数组、二叉数
+			set数据结构：类似数组但是 new Set([])
+			let setArr = new Set();
+			setArr.add('a'); // 添加
+			setArr.add('b');
+			console.log(setArr.size) // 长度
+			setArr.delete('b') //删除
+			setArr.has('a') //检测a是否存在 true/false
+			// for...of...// 遍历值
+			for(let item of setArr){ //默认值是values, value和key是一样的
+				console.log(item)
+			}
+			for(let value of setArr.values()){console.log(value)}
+			for(let item of setArr.keys()){console.log(item)}
+			for(let [k,v] of setArr.entries()){console.log(k,v)}
+			setArr.forEach((value,index)=>{
+				console.log(value,index)
+			})
+			setArr.clear(); //清除所有值
+
+			eg:做数组去重：
+				let arr = [1,2,3,2,3,5,6,7,6,7,7];
+				let newArr = [...new Set(arr)]
+				console.log(newArr) //[1, 2, 3, 5, 6, 7]
+		-------------------------------------------------------------
+			set变成数组
+				[...set]
+
+				let setArr = new Set([1,2,3]);
+				let setArr1 = new Set([...setArr].map((val)=>val*2))
+				let setArr2 = new Set([...setArr].filter(val=>val%2===0));
+				console.log(setArr1) //{2, 4, 6}
+				console.log(setArr2) //{2}
+
+			set也可以存放json
+
+			new WekSet({},{})
+			WekSet 没有size、clear，有add,has,delete
+
+	----------------------------------------------------------------------------------
+		Map方法：
+			1、Map 对json功能增强，key可以是任意类型值
+			let map = new Map();
+			map.set(key,value) // 设置一个值
+			map.get(key) // 获取值
+			map.delete(key) //删除一项
+			map.has(key) // 包含某项 true / false
+			map.clear() // 清空
+
+			循环：
+				for(let [key,value] of map){}
+				for(let key of map.keys()){}
+				for(let value of map.values())
+				for(let [key,value] of map.entries()){}
+				map.forEach((value,key) =>{})
+
+==========================================================================
+	数字(数值)变化：
+		二进制：
+			let a = 0b11;
+			console.log(a) //3
+		八进制：
+			let b = 0o666;
+			console.log(b) //438
+		十六进制：
+			let c = 0xccc
+			console.log(c) //3276
+		进制转换：
+			let num = 10;
+			console.log(num.toString(8)) // 12
+			console.log(num.toString(2)) // 1010
+			console.log(num.toString(16)) // a
+	--------------------------------------------------------
+		判断是否为数字：
+			原来的方法：Number()、parseIn()、parseFloat()
+	--------------------------------------------------------
+		Number.isNaN() -> true/false
+			eg:
+			isNaN(NaN) // true
+			Number.isNaN(NaN) // true
+
+			isNaN(undefined) // true
+			Number.isNaN(undefined) // false
+
+			isNaN('qer') // true
+			Number.isNaN('qer') // false
+
+			isNaN(12) // false
+			Number.isNaN(12) // false
+
+		Number.isFinite() // 检查一个数值是否为数字
+			eg:
+				Number.isFinite(12) // true
+				Number.isFinite(-12) // true
+				Number.isFinite('a') // false
+				Number.isFinite(true) // false
+
+		Number.isInteger() // 判断数字是否为整数
+			Number.isInteger(12.5) // false
+			Number.isInteger(12) // true
+
+		Number.parseInt() === parseInt()
+		Number.parseFloat() === parseFloat()
+	-----------------------------------------------------------
+		Number.isSafeInteger() 安全整数：包含-(2^53-1)、(2^53-1)
+			安全整数：-(2^53-1) - (2^53-1)
+			Number.isSafeInteger(2**53) // false
+			Number.isSafeInteger(-2**53) // false
+			Number.isSafeInteger(2**53 -1) // true
+			Number.isSafeInteger(-(2**53 -1)) // true
+
+		最大安全整数： Number.MAX_SAFE_INTEGER
+		 Number.MAX_SAFE_INTEGER === 2**53 -1
+	 最小安全整数：Number.MIN_SAFE_INTEGER
+	 	Number.MIN_SAFE_INTEGER === -(2**53-1)
+
+-------------------------------------------------------------
+	Math方法：
+		Math.abs() // 返回绝对值
+		Math.sqrt() // 返回平方根
+		Math.sin() // 返回数字的正弦
+
+		Math.trunc() 去除一个数的小数部分
+		Math.sign() // 判断一个数是否为正数或负数
+			eg:
+				Math.sign(-1) // -1
+				Math.sign(3) // 1
+				Math.sign(0) // 0
+				Math.sign(-0) // -0
+				其它值：返回NaN
+		Math.cbrt() //返回一个数的立方根
+			Math.cbrt(27) // 3
+=========================================================
+	ES2018(es9)
+		1、命名捕获：
+			语法：(?<名字>)
+			eg:
+				let str = '2018-03-20';
+				// let reg = /(\d{4})-(\d{2})-(\d{2})/
+				let reg = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/
+				console.log(str.match(reg).groups) //{year: "2018", month: "03", day: "20"}
+				let {year,month,day} = str.match(reg).groups;
+				console.log(year,month,day) //2018 03 20
+		2、反向引用：
+			\1  \2  $1  $2
+
+		3、反向引用命名捕获：（做匹配）
+			语法：\k<名字>
+				let reg = /^(?<brain>welcome)-\k<brain>$/;
+				let reg1 = /^(?<brain>welcome)-\1$/; // 和reg匹配结果一样
+				let arr = 'welcome-welcome';
+				let arr1 = 'welcome-welcome1';
+				console.log(reg.test(arr)) // true
+				console.log(reg.test(arr1)) // false
+
+		4、替换
+			$1\$2
+				let str = '2018-02-30';
+				let reg = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/
+				let str1 = str.replace(reg,'$<year>/$<month>/$<day>');
+				console.log(str1) //2018/04/30
+				let str2 = str.replace(reg,'$<day>/$<month>/$<year>');
+				console.log(str2) //  30/04/2018
+
+				回调方式：
+					let str = '2019-02-21';
+					let reg = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+
+					let str1 = str.replace(reg,(...arg)=>{
+						console.log(arg[arg.length -1 ]) // {year: "2019", month: "02", day: "21"}
+						let {year,month,day} = arg[arg.length - 1];
+						return `${day}/${month}/${year}`
+					})
+					console.log(str1) // 21/02/2019
+
+================================================================================
+  标签函数：
+    function fn(args){
+      console.log(args) // 返回的是一个数组["welcome", raw: Array(1)]
+      return args[0].toUpperCase();
+     }
+     console.log(fn`welcome`) // WELCOME
+
+====================================================================================
+  proxy:代理，扩展(增强)对象的一些功能，比如说Vue
+    可以做预警、上报、扩展功能、统计、增强功能
+     proxy是设计模式的一种，代理模式
+     new Proxy(obj,{
+      get(target,property){},
+      set(){},
+      deleteProperty(target,property){},
+      has(target,property){},
+      apply(){} // 一般配合Reflect.apply()
+      .....
+     })
+     eg:
+      let obj = {name: 'brain'};
+      let newObj = new Proxy(obj,{
+        get(target,property){
+          console.log(target,property) //{name: "brain"} "name"
+        }
+      })
+      newObj.name //
+
+      eg:访问一个对象的属性，如果不存在就给一个警告信息而不是返回undefined
+        let obj = {name: 'brain'};
+        let newObj = new Proxy(obj,{
+        get(target,property){
+            if(property in target){
+              return target[property]
+            } else {
+              console.warn(`${property} is not exist`);
+              return '不存在此属性！'
+            }
+          }
+        })
+      newObj.name // brain
+      newObj.age // 不存在此属性
+
+      创建dom // mdules/proxy.html
+
+      eg:
+        function sum(a,b){
+          return a+b
+        }
+        let newSum = new Proxy(sum,{
+          apply(target,context,args){
+            return Reflect.apply(...arguments) // 反射
+            // return Reflect.apply(...arguments)**2 // 反射
+          }
+        })
+        console.log(newSum(2,3)) //5
+
+        let res = Reflect.apply(Math.ceil,null,[9.8]);
+        console.log(res) // 10
+
+        检测Object上是否有assign方法
+        Reflect.has(Object,'assign') //true
+        delete json.a  -> Reflect.deleteProperty(json.a)
+        eg:
+          let json = {a:1,b:2};
+          delete json.a; //Reflect.deleteProperty(json,'a') 效果一样
+
+
+
+
+
+
+============================================================================================
+		定义类  class
+			函数声明和类声明之间的一个重要区别是函数声明会提升，类声明不会。
+				类声明：
+				class Rectangle{
+			 		constructor(height, width) {
+			 			this.height = height;
+			 			this.width = width;
+			 		}
+		 		}
+				类表达：
+
+	 -->
+	 <script>
+	 	// 类声明
+	 	// class Rectangle{
+	 	// 	constructor(height, width) {
+	 	// 		this.height = height;
+	 	// 		this.width = width;
+	 	// 	}
+	 	// 	get area() {  //原型方法
+	 	// 		return this.calcArea()
+	 	// 	}
+	 	// 	calcArea() {
+	 	// 		return this.height*this.width
+	 	// 	}
+	 	// }
+	 	// const squart = new Rectangle(10,10)
+	 	// console.log(squart.area)
+
+
+	 	//类表达
+	 	//匿名类
+	 	// let Rectangle = class{
+	 	// 	constructor(height, width){
+	 	// 		this.width = width;
+	 	// 		this.height = height;
+	 	// 	}
+	 	// }
+	 	//命名的类
+	 	// let Rectangle = class Rectangle{
+	 	// 	constructor {
+	 	// 		this.height = height;
+	 	// 		this.width = width;
+	 	// 	}
+	 	// }
+
+	 	//静态方法
+	 	// class Point{
+	 	// 	constructor(x, y){
+	 	// 		console.log(x)
+	 	// 		this.x = x;
+	 	// 		this.y = y;
+	 	// 	}
+	 	// 	static distance(a, b) {  //静态方法
+	 	// 		const dx = a.x - b.x;
+	 	// 		const dy = a.y - b.y;
+	 	// 		return Math.hypot(dx, dy);
+	 	// 	}
+	 	// }
+	 	// const p1 = new Point(0, 0);
+	 	// const p2 = new Point(5, 5);
+	 	// console.log(Point.distance(p1, p2))
+
+	 	// class Animal{
+	 	// 	speak() {
+	 	// 		return this;
+	 	// 	}
+	 	// 	eat() {
+	 	// 		return this;
+	 	// 	}
+	 	// }
+	 	// let obj = new Animal();
+	 	// console.log(obj.speak()) // Animal{}
+	 	// let speak = obj.speak;
+	 	// console.log(speak()) //undefined
+
+	/*
+		数组的方法：
+			var fruits = ['apple','banana','strawbery','juice']
+			fruits.forEach(function(item,value,index){
+				console.log(item,value)
+			})
+
+			添加元素到数组的末尾 push
+				var newL = fruit.push('Orange')
+
+			删除数组末尾的元素  pop
+				var last = fruits.pop()
+
+			删除数组最前面（头部）的元素 shift
+				var first = fruits.shift()
+
+			添加元素到数组的头部  unshift
+				var newl = fruits.unshift('Strawberry')
+
+			找出某个元素在数组中的索引  indexOf
+				var pos = fruits.indexOf('Banana');
+
+			通过索引删除某个元素 splice(pos, 1)
+				var pos = fruits.indexOf('banana');
+				var removeItem = fruits.splice(pos,1)
+
+			从一个索引位置删除多个元素 splice(pos,n)
+				var fruits = ['apple','banana','strawbery','juice']
+				var pos = 1,n=2;
+				console.log(fruits.splice(pos,n)) //['banana','strawbery']
+				console.log(fruits) ['apple', 'juice']
+
+			复制一个数组  slice()
+				var shallowCopy = fruits.slice()
+
+			join() 将一个数组（或一个类数组对象）的所有元素连接成一个字符串并返回这个字符串。如果数组只有一个项目，那么将返回该项目而不使用分隔符
+				var arr = ['Fire','Air','Water']
+				console.log(arr.join('')) //FireAirWater
+
+
+
+		es5数组新增方法：(支持到Internet Explorer 9+)
+			1、forEach: 不支持break或是return、continue等
+
+				var colors = ['blue','red','yellow']
+				for(let i=0;i<colors.length;i++){
+					console.log(colors[i])
+				}
+
+				colors.forEach( function(item, index) {
+					console.log(item,index)
+				});
+
+				forEach 参数抽离
+				function color(a,b,c) {
+					console.log(a,b,c)
+				}
+				colors.forEach(color)
+
+			2、map() 创建一个新数组，其结果是该数组中的每个元素都调用一个提供的函数后返回的结果。
+				var array1 = [1,2,3,4]
+				const map1 = array1.map(x => x*2)
+				console.log(map1)  //[2, 4, 6, 8]
+
+				//重新格式化数组中的对象
+				var kvArray = [{key: 1, value: 10},
+               {key: 2, value: 20},
+               {key: 3, value: 30}];
+
+				var reformattedArray = kvArray.map(function(obj) {
+				   var rObj = {};
+				   rObj[obj.key] = obj.value;
+				   return rObj;
+				});
+				console.log(reformattedArray) // [{1: 10},{2: 20},{3: 30}]
+				console.log(['1', '2', '3'].map( str => parseInt(str) )) //[1, 2, 3]
+				console.log(['1', '2', '3'].map(Number)) //[1, 2, 3]
+				console.log(['1.1', '2.2e2', '3e300'].map(Number)) //[1.1, 220, 3e+300]  可保留浮点粗数
+
+			3、concat() 合并两个或多个数组，返回一个新数组
+				var num1 = [1, 2, 3], num2 = [4, 5, 6], num3 = [7, 8, 9];
+				var nums = num1.concat(num2, num3);
+
+			4、every() 返回 true ，否则返回 false，每一项通过条件则为true,如果有一项不通过条件则为false
+				var array1 = [1, 30, 39, 29, 10, 13];
+				function isBelowThreshold(currentValue) {
+				  return currentValue < 40;
+				}
+				console.log(array1.every(isBelowThreshold)) // true
+
+				[1, 30, 39, 29, 10, 13].every(x => x >= 40)
+
+			5、fill()  用一个固定值填充一个数组中从起始索引到终止索引内的全部元素，不包括终止索引
+				var array1 = [1, 2, 3, 4];
+				array1.fill(0,2,4) // [1,2,0,0]
+				array1.fill(5,1) // [1,5,5,5]
+				array1.fill(6) // [6,6,6,6]
+
+			6、filter() 创建一个新数组, 其包含通过所提供函数实现的测试的所有元素
+				var words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
+				const result = words.filter(word => word.length > 6);
+				console.log(result) //["exuberant", "destruction", "present"]
+
+			7、find() 返回数组中满足提供的测试函数的第一个元素的值，否则返回 undefined
+				var inventory = [{name: 'apples', quantity: 2}, {name: 'bananas', quantity: 0}, {name: 'cherries', quantity: 5} ];
+				console.log(inventory.find(x => x.name === 'apples')) //{ name: "apples", quantity: 2 }
+
+			8、findIndex() 返回数组中满足提供的测试函数的第一个元素的索引，否则返回-1
+				var array1 = [5, 12, 8, 130, 44];
+				console.log(array1.findIndex(x => x > 13)) //3
+
+			9、flat() 会按照一个可指定的深度递归遍历数组，并将所有元素与遍历到的子数组中的元素合并为一个新数组返回
+					使用 Infinity 作为深度，展开任意深度的嵌套数组
+
+
+				var arr1 = [1, 2, [3, 4]]
+				console.log(arr1.flat()) //[1, 2, 3, 4]
+
+				var arr2 = [1, 2, [3, 4, [5, 6]]];
+				console.log(arr2.flat()) //[1, 2, 3, 4,[5,6]
+
+				var arr3 = [1, 2, [3, 4, [5, 6]]];
+				console.log(arr3.flat(2)) //[1, 2, 3, 4, 5, 6]
+				arr3.flat(Infinity)  //[1, 2, 3, 4, 5, 6]
+
+			10、flat() 方法会移除数组中的空项
+				var arr4 = [1, 2, , 4, 5];
+				console.log(arr4.flat()) //[1,2,4,5]
+
+			11、join() 将一个数组（或一个类数组对象）的所有元素连接成一个字符串并返回这个字符串
+				var arr = ['Fire','Air','Water']
+				console.log(arr.join('-')) //Fire-Air-Water
+				console.log(arr.join('')) //FireAirWater
+
+			12、reverse()
+				var arr = ['one','two','three']
+				console.log(arr.reverse()) // ['three','two','one']
+				console.log(arr) //['three','two','one']
+
+			13、sort() 用原地算法对数组的元素进行排序，并返回数组，默认排序顺序是根据字符串Unicode码点
+					var months = ['March', 'Jan', 'Feb', 'Dec'];
+					months.sort();
+					console.log(months) //["Dec", "Feb", "Jan", "March"]
+
+					var array1 = [1, 30, 4, 21, 100000];
+					array1.sort()
+					console.log(array1) //[1, 100000, 21, 30, 4]
+
+					按大小排序：
+					var array1 = [1, 30, 4, 21, 100000];
+					array1.sort((a,b) => a-b)  //[1, 4, 21, 30, 100000]
+
+			14、splice()方法通过删除或替换现有元素或者原地添加新的元素来修改数组,并以数组形式返回被修改的内容。此方法会改变原数组
+					var arr = ['1','2','3','4']
+					arr.splice(1,0,'5') //["1", "5", "2", "3", "4"]
+					arr.splice(1,1,'5') //["1", "5", "3", "4"]
+					arr.splice(4,0,'5') //['1','2','3','4','5']
+
+ 			15、toString() 返回一个字符串，表示指定的数组及其元素
+ 					var array1 = [1, 2, 'a', '1a'];
+ 					console.log(array1.toString()) //1,2,a,1a
+
+	箭头函数:
+
+	let 允许你声明一个作用域被限制在块级中的变量、语句或者表达式。与var关键字不同的是，let声明的变量只能是全局或者整个函数块的。
+			*let的作用域是块，而var的作用域是函数
+		function varTest() {
+		  var x = 1;
+		  if (true) {
+		    var x = 2;  // 同样的变量!
+		    console.log(x);  // 2
+		  }
+		  console.log(x);  // 2
+		}
+		varTest();
+
+
+		function letTest() {
+		  let x = 1;
+		  if (true) {
+		    let x = 2;  // 不同的变量
+		    console.log(x);  // 2
+		  }
+		  console.log(x);  // 1
+		}
+		letTest()
+
+	const 常量是块级作用域，常量的值不能通过重新赋值来改变，并且不能重新声明
+				此声明创建一个常量，其作用域可以是全局或本地声明的块，定义时就要初始化
+
+		const names= {p1:'jack',p2:'lily'}
+		names.p1 = 'joe'
+		 console.log(names)
+
+	 模板字符串：
+
+		// let firstName ='peng'
+		// let lastName = 'meili'
+		// let fullName = firstName + ' ' + lastName
+		// // let str1 = `你好${fullName}`
+		// let str1 = `你好${5+8}`
+		// console.log(str1)
+		// console.log(`${firstName} ${lastName}`)
+
+	变量的结构赋值：
+
+		let names = {
+			p1: 'lily',
+			p2: 'brain',
+			pn: {
+				a: 1,
+				b: 2
+			}
+		}
+		let {p1, p2, pn: {a,b}} = names  // let { p1: p1, p2: p2 } = names  当属性名和变量名一样时可以缩写
+		 console.log(p1) //lily
+		 console.log(p2) //brain
+		 console.log(a)
+		 console.log(b)
+
+		 let { p1: np1, p2 } = names
+		 console.log(np1) //lily
+
+		 let arr = [1, 2, 3];
+		 let [a1, a2, a3] = arr;
+		 console.log(a1, a2, a3, '数组结构') // 1 2 3 "数组结构"
+
+
+	箭头函数：匿名函数
+		let arrow = (str) => {
+			console.log(str)
+		}
+		arrow('aa')
+
+		自执行：
+		((str) => {
+			console.log(str)
+		})(999)
+
+		只有一个参数时可以不加括号：
+		let fn1 = str => {
+			console.log(str)
+		}
+		fn1('只有一个参数时可以不加括号') //只有一个参数时可以不加括号
+
+		箭头后面可以直接写返回值：
+		let fn2 = str => '直接写返回值'
+		console.log(fn2()) // 直接写返回值
+
+		let fn3 = str => ({a:1, b:2})
+		console.log(fn3()) // 返回一个对象{a: 1, b: 2}
+
+		this的指向：
+
+		函数默认值：
+
+			function fnn(a, b=7){
+			console.log(a, b)
+		}
+		fnn(1)  // 1 7
+		*/
+	 </script>
+</body>
+</html>
+

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>正则表达式</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script>
+	//****正则都是操作字符串的   正则默认是区分在小写的，如果不想区分大小写就在正则的最后加标识 i
+	//正则默认匹配成功就会结束，不会继续匹配，如果想继续匹配就在正则的最后添加标识 g
+	//量词：匹配不确定的位置
+	// + : 至少出现一次 >=1
+	// $ : 结束位置
+
+
+
+	//判断字符串是不是数字类型的字符串
+	//var str = '50';
+	// if(str <= '9' && str >= '0'){
+	// 	alert('是数字类型的字符串');
+	// }else{
+	// 	alert('不是数字类型的字符串');
+	// }
+
+
+	//找到字符串中所有的数字
+	//var str = 'add235ff424jd6sa23lsf4daa';
+	var arr = [];
+	var tmp = '';
+
+	// function findNum(str){
+	// 	for(var i = 0; i < str.length; i++){
+	// 		if(str.charAt(i) <= '9' && str.charAt(i) >= '0'){
+	// 			//arr.push(str.charAt(i));
+	// 			tmp += str.charAt(i);
+	// 		}else{
+	// 			if(tmp){
+	// 				arr.push(tmp);
+	// 				tmp = '';				
+	// 			}
+	// 		}
+	// 	}
+	// 	return arr;
+	// }
+
+	//正则
+	// function findNum(str){
+	// 	return str.match(/\d+/g);
+	// }
+	//console.log(findNum(str));
+
+	//正则的写法
+	//创建一个正则
+	// var re = /a/;
+	// var re = new RegExp('a');  当正则需要传递参数的时候要用全称写法
+
+	//常用方法
+	//test();  正则去匹配字符串，成功返回true，失败返回false
+	// var re = /ad/;
+	// console.log(re.test(str));
+
+	//转义字符
+	// 	\s : 空格
+	//  \S : 非空格
+	//  \d : 数字
+	//  \D : 非数字 
+	//  \w : 字符  （字母、数字、下划线）
+	//  \W : 非字符
+	// .  任意字符
+	// \. 查找.
+	// \b : 独立的部分（起始、结束、空格 ）
+	// \B : 非独立的部分
+	// \1  重复的子项 
+	// var reg = /\w\w/;c9
+	// var reg = /(\w)\1/; cc\99
+
+
+	// var str = 'onetwo';
+	// var reg = /one\b/;
+	// console.log(reg.test(str));
+	// e.g  获取class的方法
+
+
+
+
+	// var re = /\D/;
+	// if(re.test(str)){
+	// 	console.log("不全是数字！");
+	// }else{
+	// 	console.log('全是数字！');
+	// }
+
+	//正则的search方法  匹配字符串，成功返回位置，不成功返回-1
+	//var re = /D/i;
+	//var re = new RegExp('B','i');
+	//console.log(str.search(re));
+
+	//正则的match方法  匹配字符串，成功返回匹配的数组，不成功返回null	
+	// var reg = /\d+/g;
+	// console.log(str.match(reg))
+
+	//replace();
+	//var reg = /a+/g;
+	//console.log(str.replace(reg,'b'));
+	//eg:敏感词过虑
+
+	//匹配子项：小括号()   (也可以是分组操作)
+	//e.g  2018-9-17 -> 2018.9.17
+	// var time = '2018-9-17';
+	// var reg = /(\d+)(-)/g;
+
+	// time = time.replace(reg,function($0,$1,$2){
+	// 	return $1 + '.';
+	// });
+	// console.log(time);
+
+	// var str = 'abc';
+	// var reg = /(a)(b)(c)/;
+	// alert(str.match(reg));[abc,a,b,c] //当macth 不加g 的时候才能匹配子项的内容
+
+
+
+	//字符类：一组相似的元素，[]中括号中整体代表一个字符 
+	// var str = 'abc';
+	// var reg = /a[bcd]c/;
+	// var reg1 = /a[^bcd]c/; // ^ 写在括号里表示排除 
+	// console.log(reg1.test(str));	
+
+	//范围
+	//[a-z]  a-z 26个小写字母[a-z0-9A-Z];
+	//e.g  过滤标签
+
+	//量词：{}用中括号表示
+	//{4,7}最少出现4次，最多出现7次
+	//{4,}最少出现4次
+	//{4}正好出现4次
+	//+:{1,}至少出现一次
+	//?:{0,1}至少出现0次或1次
+	//*:{0,}至少出现0次
+
+	匹配中文：\[\u4e00-\u9fa5]\;
+	行首行尾去空格：\^\s+|\s+$\g
+	email:\^\w+@[a-z0-0]+(\.[a-z]+){1,3}$\
+	网址：\[a-zA-Z]+://[^\s]*\
+	qq号：\[1-9][0-9]{4-9}\
+	邮政编码：\[1-9][0-9]\d5\
+	身份证：[1-9]\d{1-4}|[1-9]\d{17}|[1-9]\d{16}x
+
+	var reg = {
+		qq:\[1-9][0-9]{4-9}\,
+		idCard:\[1-9]\d{1-4}|[1-9]\d{17}|[1-9]\d{16}x\
+	}
+
+	re.qq()
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</head>
+<body>
+
+<!--
+	字符串的方法：
+	stringObject.indexOf(searchvalue)  //返回字符串在stringObject的位置，如果没有找到则返回-1，对大小写敏感
+	stringObject.substring(start,stop) //提取字符串中介于两个指定下标之间的字符，不包含stop位置
+	stringObject.split(" ",n);  //一个字符串分割成字符串数组
+	stringObject.charAt(2)  //返回指定位置的字符  
+
+-->
+	<textarea id="aa"></textarea>
+	<textarea id="bb"></textarea>
+	<button id="btn">提交</button>
+
+	<ul id="list">
+		<li class="box1">111111</li>
+		<li class="box1box2">2222222</li>
+		<li class="box1 box2">444444</li>
+	</ul>
+
+	
+   <script>
+   var atx = document.getElementById('aa');
+   var atx1 = document.getElementById('bb');
+   var btn = document.getElementById('btn');
+   //敏感词过虑
+   // var reg = /中国|你妹/g;
+   // window.onload = function(){
+   // 		btn.onclick = function(){
+   // 			//atx1.value = atx.value.replace(reg,'*');
+   // 			atx1.value = atx.value.replace(reg,function(str){
+   // 				console.log(str);
+   // 				var result = '';
+   // 				for(var i = 0; i < str.length; i++){
+   // 					result += '*';
+   // 				}
+   // 				return result;
+   // 			})
+   // 		}
+   // 	}
+
+   //过滤标签
+   // var reg = /<[^>]+>/g;
+   // window.onload = function(){
+   // 		btn.onclick = function(){
+   // 			atx1.value = atx.value.replace(reg,'');
+   // 		}
+   // }
+
+   //过滤标签
+
+   // window.onload = function(){
+   // 	var oList = document.getElementById('list');
+   // 	var aLi = getClass(oList,'box1');
+   // 	for(var i = 0; i < aLi.length; i++){
+   // 		aLi[i].style.background = 'red'; 
+   // 	}
+   // }
+   // function getClass(oParent,sclass){
+   // 		var arr = [];
+   // 		var aEle = oParent.getElementsByTagName('li');
+   // 		var reg = new RegExp('\\b'+sclass+'\\b');
+
+   // 		for(var i = 0; i < aEle.length;i++){
+   // 			if(reg.test(aEle[i].className)){
+   // 				arr.push(aEle[i])
+   // 			}
+   // 		}
+   // 		return arr;
+   		
+   // }
+
+   //e.g 查找字符串中重复最多的字符
+ //  	var str = 'adbceee';
+ //  	var arr = str.split('');
+ //  	str = arr.sort().join('');
+
+ //  	var reg = /(\w)\1*/g;
+ //  	var index = 0;
+ //  	var value = '';
+
+ //  	str.replace(reg,function($0,$1){
+ //  		if(index < $0.length){
+ //  			index = $0.length;
+ //  			value = $1; 
+ //  		}
+ //  	})
+	// alert('出现次数最多的字符为：'+value+',出现的次数为：'+index);
+
+	//e.g 判断输入的是不是QQ号
+	// var str = '12aa34aa';
+	// var reg = /^[1-9]\d{4,9}$/g;  //^正则最开始的位置
+	// console.log(reg.test(str))
+
+	//e.g 去空
+	// var str = ' hello ';
+	// alert('('+ trim(str) +')');
+	// function trim(str){
+	// 	var reg = /^\s+|\s+$/g;
+	// 	return str.replace(reg,'');
+	// }
+
+	//e.g 不能为http开头
+	var reg = /^(?!http).*:\/\/{1}/
+
+	
+   </script> 
+</body>
+</html>

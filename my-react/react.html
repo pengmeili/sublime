@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>react 教程</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+<script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+<script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script> <!-- 解析jsx文件 -->
+</head>
+<body>
+<div id="example"></div>
+    <script type="text/babel">
+
+        /*  创建一个脚手架react工程
+            安装全局
+                npm install -g create-react-app
+                create-react-app player-list
+                npm start
+            生命周期：
+            1、挂载（mount）
+                constructor() 构造函数，在创建组件时调用一次
+                componentWillmount() 在组件即将被挂载时调用
+                render() 渲染
+                componentDidMount() 组件被挂载完成时调用一次，可以在这里使用refs
+
+            2、卸载（umount）(组件从页面中移走)
+                componentWillUnmount() 即将制裁卸载(没有卸载完成)
+
+            3、更新
+                componentWillReceiveProps(nextProps) 父组件的更新会触发子组件的这个函数
+                    nextProps : 父组件更新时带来的数据
+
+                shouldComponentUpdate(nextProps, nextState)  是否需要重新渲染，return true/false
+
+                componentWillUpdate(nextProps, nextState)  即将更新
+
+                render() 渲染
+
+                compenentDidUpdate(prevProps, prevState)  更新完成
+
+
+
+            type="text/babel" ：浏览器不会解析这里面的代码，而是babel.js读取这里面的内容，然后生成浏览器可识别的js代码
+
+        * jsx：
+        *   javascript XML
+        *   基于javascript的语言，融合了XML，我们可以在js中书写XML
+        *   XML中可以包含子元素，但是结构中只能有一个顶级元素
+            支持报插值表达式 {表达式}
+        *
+        * ReactDom.render(需要渲染的内容, 放置内容的容器)
+        *   容器不能是body
+        *
+        * 插值表达式：
+        *   字符串
+        *   数字
+
+        *   下面三种类型的值转出空
+        *   布尔值
+        *   空
+        *   未定义
+        *
+        *   对象：不能被转出
+        *       但是可以输出一个数组对象，需要注意的是react对数组进行转字符串处理，相当于arr.jion('')
+        *
+        *   属性：
+        *       jsx标签支持属性设置
+        *       属性名 = "属性值"，必须要用双引号
+        *       属性值支持插值表达式
+        *   注意：
+        *       1、class：使用className属性来代替
+        *       2、style：必须使用对象
+        *
+        *   创建一个新的react项目：
+        *       1、安装全局的创建包：
+                    sudo npm install -g create-react-app
+                2、创建：
+                    create-react-app xxxx
+                3、启动
+                    npm start
+
+            react重定向：
+                return <Redirect to="/add"/>
+
+            返回上一页：
+                this.props.router.history.goBack()
+
+            redux：是单独的一个方法，不依赖react
+                安装：npm install redux
+
+             redux结合react必须安装插件：react-redux
+                npm install react-redux
+        *
+        *
+        *
+        * */
+    	let test = 'ddd';
+    	// ReactDOM.render(
+        //     <div>
+        //         <h1 id="h1">{test}</h1>
+        //         <h1 id={test}>{1+2}</h1>
+        //         <h1>hello，react</h1>
+        //         {[1,2,3]} {/* 123 注释方法 */}
+        //         <h1 className="aa">className</h1>
+        //         <h1 style={{color:'red'}}>style</h1>
+        //     </div>,
+        //     document.getElementById('example')
+        //   );
+
+        //列表输出
+        let users = ['lily', 'brain', 'lucy']; //数组
+        let obj = {'left':100, 'right': 100};
+
+        ReactDOM.render(
+            <div>
+                <ul>
+                    {
+                        users.map((user, index) => {
+                            return <li key={index}>{ user }</li>
+                        })
+                    }
+                </ul>
+                <ul>
+                    {
+                        // Object.keys(obj) ["left", "right"]
+                        Object.keys(obj).map(key => {
+                            return <li key={key}>{key} : {obj[key]}</li>
+                        })
+                    }
+                </ul>
+            </div>,
+            document.getElementById('example')
+        );
+    </script>
+
+</body>
+</html>

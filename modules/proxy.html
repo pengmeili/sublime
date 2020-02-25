@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>proxy create dom</title>
+</head>
+<body>
+<script>
+  const DOM = new Proxy({},{
+      get(target, p, receiver) {
+        console.log(target,p)
+        return function (attr={}, ...children) {
+          const el = document.createElement(p);
+          // 添加属性
+          for(let key of Object.keys(attr)){
+            el.setAttribute(key,attr[key])
+          }
+          // 添加子元素
+          for(let child of children){
+            if(typeof child === 'string'){
+              child = document.createTextNode(child);
+            }
+            el.appendChild(child)
+          }
+          return el;
+        }
+      }
+  });
+  let oDiv = DOM.div({id:'div1',class: 'div1'},'我是div','我的内容是kdjkdjfk',
+    DOM.a({href:'http://www.baidu.com',target:'_blank'},'访问百度'),
+    DOM.ul({},
+      DOM.li({},'1111'),
+      DOM.li({},'2222'),
+      DOM.li({},'3333')
+    )
+  );
+  window.onload = function (e) {
+    document.body.appendChild(oDiv)
+  }
+</script>
+</body>
+</html>

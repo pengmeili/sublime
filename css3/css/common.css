@@ -1,0 +1,9 @@
+body,h1,h2,h3,h4,h5,h6,dl,dt,dd,ul,ol,li,th,td,p,blockquote,pre,form,fieldset,legend,input,button,textarea,hr{margin:0;padding:0;}
+ul,ol{list-style:none;}
+body{color: #121212; font:12px/1.5 "Microsoft Yahei","\5FAE\8F6F\96C5\9ED1",arial,sans-serif;-webkit-text-size-adjust:none; -webkit-font-smoothing:antialiased}
+select,input,button{vertical-align:middle;font-size:100%;}
+fieldset,img{border:0 none;}
+em{font-style:normal;}
+.clear{clear:both;display:block;height:0;visibility:hidden;font:0/0 arial;}
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;font-size:0;}
+.clearfix{*zoom:1;}

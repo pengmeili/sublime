@@ -1,0 +1,23 @@
+/**  
+ * @Description: the stylesheet zuk media-center
+ * @authors: pengml1 (pengml1@zuk.com)
+ * @date:    2016-03-7
+ * @version: 1.0
+ */ 
+ 
+/* reset */
+html,body,h1,h2,h3,h4,h5,h6,p,ul,ol,dl,li,dt,dd,th,td,button,input,form,img{ padding: 0; margin: 0; color: #333; font-family: 'Microsoft YaHei', Helvetica;}
+html,body{-webkit-text-size-adjust: 100%; background-color: #fff; -webkit-overflow-scrolling: touch;}
+html *{ -webkit-tap-highlight-color: transparent;}
+a{ color: #333; text-decoration: none;}
+img,textarea{ border: 0; vertical-align: middle}
+ul,ol,li{ list-style: none;} 
+i,em{ font-style: normal }
+table{ border-spacing: none; border-collapse: collapse;}
+button,input[type=text],input[type=password],select,textarea{ box-sizing: border-box; -webkit-appearance: none;}
+.clearfix:after{ content: ''; display: block; height: 0; clear: both; visibility: hidden;}
+.text-red {color: #f04f48;}
+.blue-text,.text-blue{ color: #10bad1 !important;}
+.text-black{ color: #000;}
+
+

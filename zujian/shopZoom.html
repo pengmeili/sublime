@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>放大镜效果</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="stylesheet" type="text/css" href="../common_new.css">
+<link rel="stylesheet" type="text/css" href="../layout.css">
+
+<script>
+	window.onload = function(){
+		var oBox = document.getElementById('box');
+		var bar = document.getElementById('bar');
+		var bigPic = document.getElementById('bigPic');
+		var zoomPic = bigPic.getElementsByTagName('img')[0];
+
+		oBox.onmouseover = function(){
+			bar.style.display = 'block';
+			bigPic.style.display = 'block';
+		}
+		oBox.onmouseout = function(){
+			bar.style.display = 'none';
+			bigPic.style.display = 'none';
+		}
+		oBox.onmousemove = function(ev){
+			var ev = ev || window.event;
+			var _x = ev.clientX - oBox.offsetLeft - bar.offsetWidth/2;
+			var _y = ev.clientY - oBox.offsetTop - bar.offsetHeight/2;
+
+			if(_x < 0){
+				_x = 0;
+			}else if(_x > oBox.offsetWidth - bar.offsetWidth){
+				_x = oBox.offsetWidth - bar.offsetWidth;
+			}
+			
+			if(_y < 0){
+				_y = 0;
+			}else if(_y > oBox.offsetHeight - bar.offsetHeight){
+				_y = oBox.offsetHeight - bar.offsetHeight;
+			}
+			bar.style.left = _x + 'px';
+			bar.style.top =  _y + 'px';
+
+			var scaleX = _x / (oBox.offsetWidth - bar.offsetWidth);
+			var scaleY = _y / (oBox.offsetHeight - bar.offsetHeight);
+
+			zoomPic.style.left = -scaleX * (zoomPic.offsetWidth - bigPic.offsetWidth) + 'px';
+			zoomPic.style.top = -scaleY * (zoomPic.offsetHeight - bigPic.offsetHeight) + 'px';
+
+
+		}
+
+	}
+</script>
+</head>
+<body>
+
+<div class="zoom-wrap">
+	<div class="zoom-pic-box" id="box">
+		<img class="pic1" src="s3-2-s.jpg">
+		<div class="mask"></div>
+		<span class="zoom-bar" id="bar"></span>
+	</div>
+	<div class="big-pic" id="bigPic">
+		<img src="s3-2.jpg">
+	</div>
+</div>
+    
+</body>
+</html>

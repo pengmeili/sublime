@@ -1,0 +1,32 @@
+/**
+ * 
+ * @authors pengmeili (pengml1@lenovo.com)
+ * @date    2018-05-17 09:54:21
+ * @version $Id$
+ */
+.o-bg1{ background: #fff url() 0 0 no-repeat; }
+.o-bg1 .txt{ text-align: center; }
+.o-bg2{  bg }
+.aa{}
+.o-bg2{ border-radius: .04rem;}
+.aa{}
+.aa{ transition: all .2s; }
+.o-b{ display: flex; }
+.o-bg3{ background-position: 0 0; }
+
+.zoom-wrap{ position: relative; width: 300px; }
+.zoom-wrap .big-pic{ position: absolute; top: 0; right: -320px; width: 300px; height: 300px; overflow: hidden; display: none;}
+.zoom-wrap .big-pic img{ position: absolute; top: 0; left: 0; width: 28px; height: 28px;}
+
+.zoom-pic-box{ position: relative; width:300px; height: 194px;}
+.zoom-pic-box .pic1{ width: 100%; }
+.zoom-pic-box .mask{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; opacity:0; filter:alpha(opacity = 0); }
+.zoom-pic-box .zoom-bar{ position: absolute; top: 0; left:0; width: 100px; height: 100px; background:yellow; opacity: .5; filter:alpha(opacity = 40); display: none;}
+ 
+
+.nav-box{ position: absolute; left: 0; bottom: 0; width: 100%; text-align: center;}
+
+.photoPic{ position: relative; width: 1026px; margin: 0 auto; }
+.photoPic li{ width: 320px; float: left; margin: 10px; padding: 1px;}
+.photoPic .pz{ padding: 0; border: 1px solid red; }
+.photoPic li img{ width: 320px;}

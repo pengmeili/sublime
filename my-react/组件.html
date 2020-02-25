@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script> <!-- 解析jsx文件 -->
+</head>
+<body>
+    <div id="container"></div>
+    <script type="text/babel">
+        /*
+            组件：拥有独立功能的一个模块
+            标签化：传参，通过属性传入
+            如果使用类实现组件，需要继承一个父类React.Component
+            组件类必须实现一个render()的方法
+            props：传入的参数必须是用对象下的一个属性props来接收
+
+         */
+        let user1 = ['lily', 'lucy', 'limei'];
+        let user2 = ['brain', 'joe', 'joy'];
+
+        // function list(data) {
+        //     return data.map((item, index) => {
+        //         return <li key={index}>{item}</li>
+        //     })
+        // }
+
+        class List extends React.Component {
+            render() {
+                return this.props.data.map((item, index) => {
+                    return <li key={index}>{item}</li>
+                })
+            }
+        }
+
+        ReactDOM.render(
+            <div>
+                <ul>
+                    {/*list(user1)*/}
+                    <List data={ user1 } />
+                </ul>
+                <ul>
+                    {/*list(user2)*/}
+                    <List data={user2} />
+                </ul>
+            </div>,
+            document.getElementById("container")
+        )
+    </script>
+</body>
+</html>

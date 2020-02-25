@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>自定义事件实例</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<style>
+	*{padding: 0; margin: 0;}
+	#div1{ position: absolute; width: 100px; height: 100px; background-color: red; }
+	#div2{ position: absolute; width: 100px; height: 100px; left: 100px; background-color: blue; }
+	#div3{ position: absolute; width: 100px; height: 100px; left: 200px; background-color: green; }
+	#div4{ position: absolute; width: 100px; height: 100px; left: 300px; background-color: black; }
+</style>
+<script>
+	window.onload = function(){
+		var d1 = new Drag();
+		d1.init({
+			id:'div1'
+		});
+
+		var d2 = new Drag();
+		d2.init({
+			id:'div2'
+		});
+		bindEvent(d2,'toDown',function(){
+			document.title = 'hello';
+		})
+
+		var d3 = new Drag();
+		d3.init({
+			id:'div3'
+		});
+
+		bindEvent(d3,'toDown',function(){
+			document.title = '课堂';
+
+		})
+		bindEvent(d3,'toUp',function(){
+			document.title = '妙味';
+			
+		})
+
+		var d4 = new Drag();
+		d4.init({
+			id:'div4'
+		});
+
+		bindEvent(d4,'toUp',function(){
+			document.title = 'byebye';
+			
+		})
+	}
+
+	function Drag(){
+		this.oDiv = null;
+		this.disX = 0;
+		this.disY = 0;
+		this.settings = {}
+	}
+
+	Drag.prototype.init = function(opt){
+		var This = this;
+		this.oDiv = document.getElementById(opt.id);
+		extend(this.settings,opt);
+
+		this.oDiv.onmousedown = function(ev){
+			var ev = ev || window.event;
+			This.fnDown(ev);
+			//This.settings.toDown();
+			fireEvent(This,'toDown');
+
+			document.onmousemove = function(ev){
+				var ev = ev || window.event;
+				This.fnMove(ev);
+			}
+			document.onmouseup = function(){
+				This.fnUp();
+				//This.settings.toUp();
+				fireEvent(This,'toUp');
+			}
+			return false;
+		};
+	}
+
+	Drag.prototype.fnDown = function(ev){
+		this.disX = ev.clientX - this.oDiv.offsetLeft;
+		this.disY = ev.clientY - this.oDiv.offsetTop;
+	}
+
+	Drag.prototype.fnMove = function(ev){
+		this.oDiv.style.left = ev.clientX - this.disX + 'px';
+		this.oDiv.style.top = ev.clientY - this.disY + 'px';
+	}
+
+
+	Drag.prototype.fnUp = function(){
+		document.onmousemove = null;
+		document.onmouseup = null;
+	}
+
+
+
+	function bindEvent(obj,events,fn){
+		obj.listeners = obj.listeners || {};
+		obj.listeners[events] = obj.listeners[events] || [];
+		obj.listeners[events].push(fn);
+
+		if(obj.nodeType){
+			if(obj.addEventListener){
+				obj.addEventListener(events,fn,false)
+			}else{
+				obj.attachEevent('on'+events,fn)
+			}
+		}
+	}
+
+	function fireEvent(obj,events){ //主动触发自定义事件
+		if(obj.listeners && obj.listeners[events]){
+			for(var i =0;obj.listeners[events].length;i++){
+				obj.listeners[events][i]();
+			}
+		}
+	}
+	
+	function extend(obj1,obj2){
+		for(var attr in obj2){
+			obj1[attr] = obj2[attr]
+		}
+	}
+</script>
+
+</head>
+<body>
+    <div id="div1"></div>
+    <div id="div2"></div>
+    <div id="div3"></div>
+    <div id="div4"></div>
+</body>
+</html>

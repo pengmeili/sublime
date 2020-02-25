@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>sublime 常用命令整理</title>
+	<link rel="stylesheet" href="layout.css">
+</head>
+<body>	
+	<div class="o-bg1">
+		<div class="o-bg1"></div>
+		<div class="o-bg2"></div>
+		<div class="txt"></div>
+		<div class="o-bg2"></div>
+		<div class="o-bg1"></div>
+		<div class="aa"></div>
+		<div class="o-bg2"></div>
+		<a href="a"></a>
+	</div>
+	1、打开控制台：Ctrl+~
+	2、新建文件：Ctrl+n
+	3、打开Package Control： Ctrl+Shift+P
+	4、文件名打开文件：Ctrl+P  支持模糊匹配
+	5、找到函数：Ctrl+R   @函数名
+	6、定位到行，Ctrl+G，或Ctrl+P后，在框中输入:行数，如:58，则要跳转到58行去。
+	7、查找标识，Ctrl+P后，#标识。
+	8、多处同步编辑，Ctrl+D 或 按住Ctrl，然后双击选中多个即可
+	9、查找：Ctrl＋F   替換：alt+command+F  全项目查找  command+Shift+F
+	10、新建html  Ctrl＋Alt+h
+	11、新建javascript   ctrl+alt+j 
+	12、新建css ctrl+alt+c
+		ctrl+alt+p php
+		ctrl+alt+r ruby
+		ctrl+alt++shift+p python
+
+
+	13、	ctrl+右箭头  到行尾
+		ctrl+左箭头  到行首
+
+	14、ctrl + J 合并选中的多行代码为一行。举个栗子：将多行格式的CSS属性合并为一行。	
+	15、Ctrl+Shift+D 复制光标所在整行，插入到下一行。
+	16、Ctrl+Shift+K 删除整行。
+
+	17、command + R  查看方法
+</body>
+<script>
+	$(function(){
+		$(".aa").on("click",function(){
+			aa();
+			console.log(aa);
+			setTimeout(function(){
+				$(this).removeClass("aaa")
+			})
+			setInterval(function(){
+
+			},100);
+			try{
+
+			}catch{
+
+			}
+		});
+
+	});
+
+	function bb(){
+		console.log("111");
+	}
+	function aa(){
+		console.log("111");
+	}
+</script>

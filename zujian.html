@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>组件开发</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<style>
+	*{padding: 0; margin: 0;}
+	.tabDiv button{ width: 30px; height: 20px; border: 1px solid #ccc; outline: none; cursor: pointer;}
+	.tabDiv .active{ border: 1px solid red }
+	.tabDiv div{ width: 100px; height: 50px; border: 1px solid #ccc; display: none; }
+	#div1{ position: absolute; width: 100px; height: 100px; background-color: red; }
+	#div2{ position: absolute; width: 100px; height: 100px; left: 100px; background-color: blue; }
+</style>
+<script>
+	/*
+	对象的组成：
+		-方法(行为、操作)--函数：过程、动态
+		-属性--变量：状态、静态的
+
+		工厂模式  封闭函数
+		当用new去调用一个函数：这个时候函数中的this就是创建出来的对象，而且函数的返回值直接就是this(隐式返回);
+		new 后面调用函数叫构造函数；
+
+		基本类型的赋值只是值的复制，对象类型的赋值不仅是值的复制，也是也是引用的传递；
+
+		基本类型比较，只要值相同就可以，对象类型比较，必须是值和引用都一样才行;
+
+		js 中所有的赋值操作都会在新的内存中写入值；
+
+		原型：去改写对象下面公用的方法或者属性，让公用的方法或属性在内存中只存在一份（提高性能）；
+		原型：css中的class
+		普通方法：css中的style
+
+		优先级：普通方法 > 原型 
+
+		构造函数的写法：
+
+		function 构造函数(){
+			this.属性
+		}
+		构造函数.prototype.方法 = function(){
+			
+		}
+		var 对象1 = new 构造函数();
+		对象1.方法();
+
+		在js 源码中，系统对象也是基于原型的程序
+		var str = 'hello';  //基本类型会找到对应包装对象类型，然后包装对象把所有的属性和方法给了基本类型，然后包装对象消失
+		alrt(typeof str) //string
+
+		包装对象：基本类型都有自己的包装对象  
+		String、Number、Boolean
+		var str = new String('hello');
+		alert(typeof str) // object
+		str.charAt(0);
+		对应的源码：
+		String.prototype.charAt = function(){}
+
+
+		原型链：实例对象与原型之间的链接 _proto_(隐式链接)
+		
+		原型链的最外层是Object
+
+		面向对象的一些属性和方法：
+			hasOwnProperty()：查看自身下面的属性
+			constructor:查看对象的对应 构造函数
+				当一个构造函数生成完之后，程序会自动生成一个
+				Aa.propotype.constructor = Aa;
+				For in 的时候有些属性是找不到的；
+				避免修改constructor属性
+
+				for(var attr in Aa.prototype){
+					alert(attr)
+				}
+
+		instanceof : 对象与构造函数在原型链上是否有关系，可以用作类型判断
+			alert(a1 instanceof AAA)  
+		
+		toString():系统对象下面都是自带的，自己写的对象都是通过原型链找Object下面的
+		作用：把对象转成字符串\修改字符串格式\数字进制转换\判断类型
+		var arr = [];
+		alert(Object.prototype.toString.call== '[Object Array]'(arr) );
+
+
+		对象的继承：子类不影响父类，子类可以继承父类的一些功能（extend???）
+			属性的继承：调用父类的构造函数，call  
+			方法的继承：拷贝继续
+			for(var attr in a){
+				b[attr] = a[attr]
+			}
+
+			类式继承：js中没有类的概念，把js中的构造函数看作类，属性和方法要分开继承
+
+			属性继承
+			function Bbb(){   
+				Aaa.call(this)
+			}
+			方法继承：
+			var F = function(){};
+			F.prototype = Aaa.protoptye;
+			Bbb.prototype = new F();
+			Bbb.constructor = Bbb;  修正指向
+
+		
+
+
+
+
+		
+
+	*/
+
+	// var a = [1,2,3];
+	// var b = a;
+	// alert(a == b) // true
+
+	// var a = [1,2,3];
+	// var b = [1,2,3];
+	// alert(a == b); //false
+
+	// function createPerson(name){
+	// 	var obj = new Object();
+	// 	obj.name = name;
+	// 	obj.showName = function(){
+	// 		alert(name)
+	// 	}
+	// 	return obj;
+	// }
+	// var p1 = createPerson('pengmeili');
+	// p1.showName();
+
+	// var p2 = createPerson('xiaohei');
+	// p2.showName();
+
+	// function createPerson(name){
+	// 	this.name = name;
+	// 	this.showName = function(){
+	// 		alert(name)
+	// 	}
+	// }
+
+	// var p1 = new createPerson('aaa');
+	// p1.showName();
+
+	// var p2 = new createPerson('bb');
+	// p2.showName();
+	//alert(p1.showName == p2.showName); // false
+
+	//数组求和：
+	//普通方法：
+	// var arr = [1,2,3,4,5];
+	// arr.sum = function(){
+	// 	var result = 0;
+	// 	for(var i = 0; i < this.length;i++){
+	// 		result += this[i];
+	// 	}
+	// 	return result;
+	// }
+	// alert(arr.sum());
+
+	// var arr2 = [2,2,2,2];
+	// arr2.sum = function(){
+	// 	var result = 0;
+	// 	for(var i = 0; i < this.length;i++){
+	// 		result += this[i];
+	// 	}
+	// 	return result;
+	// }
+	// alert(arr2.sum());
+
+	//原型：
+	// var arr = [1,2,3,4,5];
+	// var arr2 = [1,2,3,4];
+	// Array.prototype.sum = function(){
+	// 	var result = 0;
+	// 	for(var i = 0; i < this.length;i++){
+	// 		result += this[i];
+	// 	}
+	// 	return result;
+	// }
+	// alert(arr.sum());
+	// alert(arr2.sum());
+
+	//工厂模式之原型
+
+	// function createPerson(name){
+	// 	this.name = name;
+	// }
+	// createPerson.prototype.showName = function(){
+	// 	alert(this.name);
+	// }
+
+	// var p1 = new createPerson('aaa');
+	// p1.showName();
+
+	// var p2 = new createPerson('bbb');
+	// p2.showName();
+
+	// alert(p1.showName == p2.showName); // true
+
+	//tab切换
+
+	//hasOwnProperty();
+	// var arr = [];
+	// arr.num = 10;
+	// Array.prototype.num2 = 20;
+	// alert(arr.hasOwnProperty('num')); // true
+	// alert(arr.hasOwnProperty('num2')); // false
+
+	//constructor;
+	// function Aa(){
+
+	// }
+	// var arr = new Aa();
+	// alert(arr.constructor); //Aa
+
+	// var a1 = [];
+	// alert(a1.constructor); //Array
+	// alert(a1.constructor == Array)// true
+
+	// function Aa(){
+
+	// }
+	// Aa.prototype.name = '小明';
+	// Aa.prototype.age = 20;
+	// var a1 = new Aa();`
+	// alert(a1.constructor); //Aa
+
+	// Aa.prototype = {
+	// 	name: '小明',
+	// 	age:20,
+	// 	constructor:Aa //必须要重定向，要不就指向Object
+	// };
+	// var a1 = new Aa();
+	// alert(a1.constructor); //Aa
+
+
+	// 原型链继承只能是单继承，如果再Majic_monkey继承两个一个父类，则以最后一个父类为主，代码
+	// function Monkey(){}
+	 //    Monkey.prototype.name="猴子";
+	 //    Monkey.prototype.skill="偷桃";
+	 //    Monkey.prototype.fun=function(){
+	 //        alert(this.name+this.skill+"很开心");
+	 //    }
+	 //    function AA(){}
+	 //    AA.prototype={
+	 //            name:"小鱼",
+	 //            skill:"吐泡泡",
+	 //            fun:function(){
+	 //                alert(this.name+this.skill+"很开心");
+	 //            }
+	 //        }
+	    
+	 //    function Majic_monkey(){};
+	 //    Majic_monkey.prototype=new Monkey();//继承了Monkey
+	 //    Majic_monkey.prototype=new AA();//继承了AA
+	 //    var wokong=new Majic_monkey();
+	 //    alert(wokong.name);
+	 //    alert(wokong.skill)
+	 //    wokong.fun()
+
+
+	 // var arr = [1,2,3];
+	 // Array.prototype.toString = function(){
+	 // 	return this.join(' ');
+	 // }
+	 // alert(arr.toString()); //1 2 3
+
+	 //进制转换
+	 // var num = 255;
+	 // alert(num.toString(16));
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</head>
+<body>
+    <div class="tabDiv" id="tabDiv">
+    	<button type="button" class="active">1</button>
+    	<button type="button">2</button>
+    	<button type="button">3</button>
+
+    	<div style="display: block">1</div>
+    	<div>2</div>
+    	<div>3</div>
+    </div>
+
+
+
+    
+
+    <div class="tabDiv" id="tabDiv1">
+    	<button type="button" class="active">1</button>
+    	<button type="button">2</button>
+    	<button type="button">3</button>
+
+    	<div style="display: block">1</div>
+    	<div>2</div>
+    	<div>3</div>
+    </div>
+	<script>
+		//传统过程式编码方式 
+		// window.onload = function(){
+		// 	var oDiv = document.getElementById('tabDiv');
+		// 	var aInput = oDiv.getElementsByTagName('button');
+		// 	var aDiv = oDiv.getElementsByTagName('div');
+
+		// 	for(var i = 0; i < aInput.length; i++){
+		// 		aInput[i].index = i;
+		// 		aInput[i].onclick = function(){
+		// 			for(var i = 0; i < aInput.length; i++){
+		// 				aInput[i].className = '';
+		// 				aDiv[i].style.display = 'none';
+		// 			}
+		// 			this.className = 'active';
+		// 			aDiv[this.index].style.display = 'block';
+		// 		}
+		// 	}
+		// }
+
+		// 先变形：
+		// 1、尽量不要出现函数嵌套函数；
+		// 2、可以有全局变量
+		// 3、 把onload中不是赋值语句的放在单独的函数中
+
+		// var oDiv = null, aInput = null, aDiv = null;
+		
+		// window.onload = function(){
+		// 	oDiv = document.getElementById('tabDiv');
+		// 	aInput = oDiv.getElementsByTagName('button');
+		// 	aDiv = oDiv.getElementsByTagName('div');
+
+		// 	init();
+		// }
+
+		// function init(){
+		// 	for(var i = 0; i < aInput.length; i++){
+		// 		aInput[i].index = i;
+		// 		aInput[i].onclick = change;
+		// 	}
+		// }
+
+		// function change(){
+		// 	for(var i = 0; i < aInput.length; i++){
+		// 		aInput[i].className = '';
+		// 		aDiv[i].style.display = 'none';
+		// 	}
+		// 	this.className = 'active';
+		// 	aDiv[this.index].style.display = 'block';
+		// }
+
+
+		// 改成面向对象：
+		// 1、全局变量就是属性；
+		// 2、函数就是方法；
+		// 3、onload中创建对象；
+		// 4、this指向问题：事件或是定时器时容易发生，让面向对象当中的this指向对象
+
+
+
+
+		// window.onload = function(){
+		// 	var t1 = new Tab('tabDiv');
+		// 	t1.init();
+		// 	t1.autoPlay(1500);
+
+		// 	var t2 = new Tab('tabDiv1');
+		// 	t2.init();
+		// 	t2.autoPlay(2000);
+		// }
+
+		// function Tab(id){
+		// 	this.oDiv = document.getElementById(id);
+		// 	this.aInput = this.oDiv.getElementsByTagName('button');
+		// 	this.aDiv = this.oDiv.getElementsByTagName('div');
+		// 	this.isCur = 0;
+		// }
+
+		// Tab.prototype.init = function(){
+		// 	var This = this;
+		// 	for(var i = 0; i < this.aInput.length; i++){
+		// 		this.aInput[i].index = i;
+		// 		this.aInput[i].onclick = function(){
+		// 			This.change(this);
+		// 		};
+		// 	}
+		// }
+
+		// Tab.prototype.change = function(obj){
+		// 	for(var i = 0; i < this.aInput.length; i++){
+		// 		this.aInput[i].className = '';
+		// 		this.aDiv[i].style.display = 'none';
+		// 	}
+		// 	obj.className = 'active';
+		// 	this.aDiv[obj.index].style.display = 'block';
+		// }
+
+		// Tab.prototype.autoPlay = function(time){
+		// 	var This = this;
+
+		// 	setInterval(function(){
+		// 		if(This.isCur == This.aInput.length-1){
+		// 			This.isCur = 0;
+		// 		}else{
+		// 			This.isCur++;
+		// 		}
+		// 		for(var i = 0; i < This.aInput.length; i++){
+		// 			This.aInput[i].className = '';
+		// 			This.aDiv[i].style.display = 'none';
+		// 		}
+		// 		This.aInput[This.isCur].className = 'active';
+		// 		This.aDiv[This.isCur].style.display = 'block';
+		// 	},time);	
+		// }
+
+		// 拖拽
+		// window.onload = function(){
+		// 	var oDiv = document.getElementById('div1');
+		// 	var disX = 0;
+		// 	var disY = 0;
+
+		// 	oDiv.onmousedown = function(ev){
+		// 		var ev = ev || window.event;
+		// 		disX = ev.clientX - oDiv.offsetLeft;
+		// 		disY = ev.clientY - oDiv.offsetTop;
+
+		// 		document.onmousemove = function(ev){
+		// 			var ev = ev || window.evnet;
+		// 			oDiv.style.left = ev.clientX - disX + 'px';
+		// 			oDiv.style.top = ev.clientY - disY + 'px';
+		// 		}
+		// 		document.onmouseup = function(){
+		// 			document.onmousemove = null;
+		// 			document.onmouseup = null;
+		// 		}			
+		// 		return false;
+		// 	}
+		// }
+
+		//变形：
+		//不能嵌套函数
+		// 2、可以有全局变量
+		// 3、 把onload中不是赋值语句的放在单独的函数中
+		// var oDiv;
+		// var disX = 0;
+		// var disY = 0;
+		// window.onload = function(){
+		// 	oDiv = document.getElementById('div1');
+		// 	init();
+		// }
+
+		// function init(){
+		// 	oDiv.onmousedown = fnDown;
+		// }
+
+		// function fnDown(ev){
+		// 	var ev = ev || window.event;
+		// 	disX = ev.clientX - oDiv.offsetLeft;
+		// 	disY = ev.clientY - oDiv.offsetTop;
+
+		// 	document.onmousemove = fnMove;
+		// 	document.onmouseup = fnUp;		
+		// 	return false;
+		// }
+
+		// function fnMove(ev){
+		// 	var ev = ev || window.evnet;
+		// 	oDiv.style.left = ev.clientX - disX + 'px';
+		// 	oDiv.style.top = ev.clientY - disY + 'px';
+		// }
+
+		// function fnUp(){
+		// 	document.onmousemove = null;
+		// 	document.onmouseup = null;
+		// }
+
+		//改成面向对象
+		// window.onload = function(){
+		// 	var d1 = new Drag('div1');
+		// 	d1.init();
+		// }
+
+		// function Drag(id){
+		// 	this.oDiv = document.getElementById(id);
+		// 	this.disX = 0;
+		// 	this.disY = 0;
+		// }
+
+		// Drag.prototype.init = function(){
+
+		// 	var This = this;
+
+		// 	this.oDiv.onmousedown = function(ev){
+		// 		var ev = ev || window.event;
+		// 		This.fnDown(ev);
+		// 		return false;
+		// 	};
+		// }
+
+		// Drag.prototype.fnDown = function(ev){
+		// 	var This = this;
+
+		// 	this.disX = ev.clientX - this.oDiv.offsetLeft;
+		// 	this.disY = ev.clientY - this.oDiv.offsetTop;
+
+		// 	document.onmousemove = function(ev){
+		// 		var ev = ev || window.evnet;
+		// 		This.fnMove(ev);
+		// 	};
+		// 	document.onmouseup = this.fnUp;		
+		// }
+
+		// Drag.prototype.fnMove = function(ev){
+		// 	this.oDiv.style.left = ev.clientX - this.disX + 'px';
+		// 	this.oDiv.style.top = ev.clientY - this.disY + 'px';
+		// }
+
+		// Drag.prototype.fnUp = function(){
+		// 	document.onmousemove = null;
+		// 	document.onmouseup = null;
+		// }
+
+
+		//面向对象的继承
+		window.onload = function(){
+			var d1 = new Drag('div1');
+			d1.init();
+
+			var d2 = new ChildDrag('div2');
+			d2.init();
+		}
+
+		function Drag(id){
+			this.oDiv = document.getElementById(id);
+			this.disX = 0;
+			this.disY = 0;
+		}
+
+		Drag.prototype.init = function(){
+			var This = this;
+			this.oDiv.onmousedown = function(ev){
+				var ev = ev || window.event;
+				This.fnDown(ev);
+
+				document.onmousemove = function(ev){
+					var ev = ev || window.event;
+					This.fnMove(ev);
+				}
+				document.onmouseup = function(){
+					This.fnUp();
+				}
+				return false;
+			};
+		}
+
+		Drag.prototype.fnDown = function(ev){
+			// var This = this;
+
+			this.disX = ev.clientX - this.oDiv.offsetLeft;
+			this.disY = ev.clientY - this.oDiv.offsetTop;
+
+			// document.onmousemove = function(ev){
+			// 	var ev = ev || window.evnet;
+			// 	This.fnMove(ev);
+			// };
+			// document.onmouseup = this.fnUp;		
+		}
+
+		Drag.prototype.fnMove = function(ev){
+			this.oDiv.style.left = ev.clientX - this.disX + 'px';
+			this.oDiv.style.top = ev.clientY - this.disY + 'px';
+		}
+
+
+		Drag.prototype.fnUp = function(){
+			document.onmousemove = null;
+			document.onmouseup = null;
+		}
+
+
+		function ChildDrag(id){
+			Drag.call(this,id);
+		}
+		extend(ChildDrag.prototype , Drag.prototype);
+
+		ChildDrag.prototype.fnMove = function(ev){
+			var L = ev.clientX - this.disX;
+			var T = ev.clientY - this.disY;
+			
+			if(L < 0){
+				L = 0;
+			}else if( L > document.documentElement.clientWidth - this.oDiv.offsetWidth){
+				L  = document.documentElement.clientWidth - this.oDiv.offsetWidth;
+			}
+
+			if(T < 0){
+				T = 0;
+			}else if( T > document.documentElement.clientHeight - this.oDiv.offsetHeight){
+				T  = document.documentElement.clientHeight - this.oDiv.offsetHeight;
+			}
+			
+
+			this.oDiv.style.left = L + 'px';
+			this.oDiv.style.top = T + 'px';
+		}
+
+
+		function extend(obj1,obj2){
+			for(var attr in obj2){
+				obj1[attr] = obj2[attr]
+			}
+		}
+	</script>
+
+
+
+	<div id="div1"></div>
+    <div id="div2"></div>
+</body>
+</html>

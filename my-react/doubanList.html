@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dou ban list</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script> <!-- 解析jsx文件 -->
+    <script src="js/douban.json.js"></script>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        #container{
+            width: 960px;
+            margin: 0 auto;
+        }
+        .douban h2{
+            color: #27a;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .list{
+            margin-top: 15px;
+        }
+        .list li{
+            padding: 10px 0;
+            border-bottom: 1px solid #fafafa;
+        }
+        .list li img{
+            float: left;
+            margin-right: 10px;
+        }
+        .list li .content{
+            float: left;
+        }
+        .list li .name{
+            font-size: 14px;
+            color: #27a;
+            line-height: 30px;
+        }
+        .list li .name span{
+            display: inline-block;
+            margin-right: 4px;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            background-color: springgreen;
+            color: #fff;
+            font-size: 12px;
+        }
+        .list li .rate{
+            color: #333;
+        }
+        .list li .rate strong{
+            color: orange;
+        }
+        .none{
+            display: none !important;
+        }
+        .block{
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+<!--        <div class="douban">-->
+<!--            <h2>豆瓣读书</h2>-->
+<!--            <ul class="list">-->
+<!--                <li>-->
+<!--                    <a href="https://movie.douban.com/subject/30211551/" class="clearfix">-->
+<!--                        <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2555084871.jpg" width="100" alt="">-->
+<!--                        <div class="content">-->
+<!--                            <h3 class="name"><span class="new">新</span>恶人传</h3>-->
+<!--                            <p class="rate">评分：<strong>7.6</strong></p>-->
+<!--                        </div>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+    </div>
+    <script type="text/babel">
+        /* Panel */
+        class Panel extends React.Component {
+            render() {
+                return (
+                    <div>
+                        <div className="douban">
+                            <h2>豆瓣读书</h2>
+                        </div>
+                        <List data={this.props.data.subjects} />
+                    </div>
+                )
+            }
+        }
+
+        class List extends React.Component {
+            render() {
+                return(
+                    <ul className="list">
+                        {
+                            this.props.data.map((item, index) => {
+                                return(
+                                    <li key={index}>
+                                        <a href={item.url} className="clearfix">
+                                            <img src={item.cover} width="100" alt="" />
+                                            <div className="content">
+                                                <h3 className="name"><span className={item.is_new?"block":"none"}>新</span>{item.title}</h3>
+                                                <p className="rate">评分：<strong>{item.rate}</strong></p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+                )
+            }
+        }
+
+        ReactDOM.render(
+            <Panel data={dataList} />,
+            document.getElementById('container')
+        )
+    </script>
+</body>
+</html>

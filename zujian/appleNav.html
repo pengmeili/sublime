@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>苹果菜单效果</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="stylesheet" type="text/css" href="../common_new.css">
+<link rel="stylesheet" type="text/css" href="../layout.css">
+
+<script>
+	window.onload = function(){
+		var aInput = document.getElementsByTagName('input');
+		var box = document.getElementById('box');
+		var aImg = box.getElementsByTagName('img');
+
+		document.onmousemove = function(ev){
+			var ev = ev || window.event;
+
+			for(var i = 0; i < aImg.length; i++){
+				var x = aImg[i].offsetLeft + aImg[i].offsetWidth/2;
+				var y = aImg[i].offsetTop + aImg[i].offsetHeight/2 + box.offsetTop;
+
+
+				var a = ev.clientX - x;
+				var b = ev.clientY - y;
+
+				var c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+				
+				var scale =1- c / 500;
+				if(scale < .5){
+					scale = .5
+				}
+				aInput[i].value = scale;
+				aImg[i].style.width = scale * 56 + 'px';
+				aImg[i].style.height = scale * 56 + 'px';
+			}	
+			
+		}
+
+
+
+	}
+</script>
+</head>
+<body>
+<input type="text" name="">
+<input type="text" name="">
+<input type="text" name="">
+<input type="text" name="">
+<input type="text" name="">
+
+<div class="nav-box" id="box">
+	<img src="s-icon17.png">
+	<img src="s-icon18.png">
+	<img src="s-icon19.png">
+	<img src="s-icon20.png">
+	<img src="s-icon21.png">
+</div>
+    
+</body>
+</html>

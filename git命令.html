@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+			/*github 是分布式管理， svn是集成式管理方式
+			 *
+			 *
+			 git clone https://github.com/pengmeili/drag.git 克隆项目到本地
+			 git config --global user.name "pengmeili" 设置开发者名字
+			 git config --global user.email "pengmeili@yeah.net" 设置开发者邮件
+			 git config --list 查看所有的选项参数
+
+			 git 的三个区
+			 1.工作区(本地开发)
+			 2.暂存区
+			 	作为过渡层
+			 	避免误操作
+			 	保护工作区和版本区
+			 	分支处理
+			 3.版本(区)库
+
+
+			 git命令：
+
+			 初始化新本地新仓库：
+
+				mkdir learning
+				cd learning
+				git init
+				ls -ah
+
+			 上传
+			 git status  查看当前状态
+			 git add dome.html  添加到缓存区
+
+			 git commit  dome.html 添加到版本库
+			 git commit .  添加所有修改的文件到版本库
+
+			 git commit -a -m "add one file"   //直接从工作区添加到版本库
+
+
+			 对比
+			 git diff  //对比的是工作区和暂存区的内容
+
+			 git diff --cached(--staged) //对比的是暂存区和版本区的内容
+
+			 git diff master //对比的是工作区和版本库的内容
+
+			 撤销
+			 git reset HEAD drag.js //从暂存区撤消到工作区
+			 git checkout -- drag.js  //从版本库覆盖本地文件
+			 git commit -m "alert drag.js"  --amend  //误操作时的一种补救，合并两次提交，只有一个版本
+
+			 删除
+			 git rm test.txt  //本地已删除，使用此命令删除暂存区的对应文件
+			 git rm -f test.txt  //删除暂存区的test.txt，而且本地对应的test.txt也会被删除
+			 git rm --cached test.txt //只删除暂存区的test.txt
+
+			 恢复
+			 git checkout 2cc78fd707f drag.js   //恢复某个文件到某一个版本  2cc78fd707f  就git log 出来的
+			 git reset --hard 2cc78fd707f       //项目整体恢复到某个版本
+			 git reset --hard HEAD^             //恢复到最后一个版本的上一个版本
+			 git reset --head HEAD^2            //恢复到最后一个版本的上两个版本
+
+			 git reflog  //回去过去的某个版本    git reset --hard 2cc78fd707f
+
+			 提交到远程仓库
+			 git remote  //查看当前clone的仓库的名称
+			 git remote -v //查看当前的远程仓库的地址和本地同步的地址
+
+			 git push origin master //orgin master 是远程仓库的名字和分支
+
+			 多人协作解决冲突
+			 git fecth //从远程仓库先同步到版本库  不合并
+
+			 git diff master origin/master  //对比不同的地方
+			 git merge origin/master  //合并地址和远程仓库的代码，手动解决后再提交
+
+			 git pull 自动合并到本地文件
+
+
+			 开源项目协作
+			 github 上的 fork
+			 github pull requst
+
+			 开发完后可以删除相应的开源项目   setting - delete
+
+
+			 分支操作
+			 git branch 查看当前分支
+			 git branch new1  //创建new1分支
+			 git checkout new1  //切换到new1 分支
+
+			 git checkout -b new1  //创建并切换到 new1 分支
+
+			 //切换到master 帐户下
+			 git merge new1 // 合并master 和 new1，如有冲突，需要手动解决冲突之后再提交，然后删除合并的版本
+
+			 git branch --merged  // 查看哪些是合并过的分支
+			 git branch --no-merged  //查看未合并的分支
+
+			 git branch -d new1  //删除new1分支  （如果一个分支和主分支合并过了，那就可以把这个分支删除掉了，此命令不能删除未合并的分支）
+			 git branch -D new2  // 可强制删除未合并的分支
+			 *
+			 删除远程分支
+			 *git push origin --delete dev1
+			 *
+			 * git push origin new1  提交到远程
+
+			 在github 上创建分支
+			 github 的项目里直接创建或删除
+
+			 github 上的标签
+			 git tag //查看标签
+			 git tag v1.0  //设置当前版本的标签
+
+			 git push origin v1.0  //提交到github上
+
+
+
+			 创建组织
+
+
+			 技巧：
+
+			 cd..  //返回上一级
+			 ls    //查看目录下的所有文件
+			 mkdir images  //新建images文件夹
+			 notepad hellow.txt  //调用notepad新建一个txt文档
+
+			 写命令时，如果记不清了，按tab键可心自动补齐
+
+			 git config --global alias.co checkout  给checkout 命令取个别名叫co，以后可直接用co
+
+			查日志：
+			 git log --pretty=oneline   //一行显示
+
+
+
+			git clone gamecode:/Push/Front
+
+			credential.helper=manager
+			gamecode.name=fucf2
+			gamecode.email=fucf2@lenovo.com
+			gamecode.hostname=http://code.lenovogame.com
+			user.name=fucf2
+			user.email=fucf2@lenovo.com
+
+			 */
+
+		</script>
+	</body>
+</html>

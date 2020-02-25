@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QQ列表</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script> <!-- 解析jsx文件 -->
+    <script src="js/data.js"></script>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .panel{
+            width: 80%;
+            border: 1px solid #cacaca;
+        }
+        .header {
+            height: 40px;
+            background-color: #efefef;
+            padding: 0 10px;
+            line-height: 40px;
+            font-size: 14px;
+        }
+        .list{
+            padding: 0 10px;
+        }
+        .list li{
+            line-height: 30px;
+        }
+        .list .vip{
+            color: red;
+        }
+        .list .message{
+            font-size: 12px;
+            color: #bbb;
+        }
+        .listWrap{
+            height: 0;
+            overflow: hidden;
+            transition: height .5s linear;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script type="text/babel">
+
+        // panel
+        class Panel extends React.Component {
+            constructor() {
+                super(...arguments);
+                this.state = {
+                    showList: [true, false, false]
+                }
+                this.changeList = this.changeList.bind(this);
+            }
+            changeList(i) {
+                console.log('i=='+i)
+                let showList = this.state.showList.map(function(val, index) {
+                    if(i == index) {
+                        return true;
+                    }
+                    return false;
+                });
+                console.log(showList)
+                this.setState({
+                    showList
+                });
+            }
+            setShow(){
+                var list = Object.keys(this.props.data).map((key, index) => {
+                    return <Group key={index} data={this.props.data[key]} show={this.state.showList[index]} onchange={this.changeList} index={index} />
+                })
+                return list
+            }
+            render() {
+                return (
+                    <div className="panel">
+                        {this.setShow()}
+                    </div>
+                )
+            }
+        }
+
+        // group
+        class Group extends React.Component {
+            constructor() {
+                super(...arguments);
+                this.state = {
+                    show: this.props.show
+                }
+            }
+            showList(show) {
+                var list = this.refs.list
+                if(show) {
+                    list.style.height = list.scrollHeight + 'px'
+                } else {
+                    list.style.height = 0
+                }
+            }
+            componentDidMount() {
+                this.showList(this.state.show)
+            }
+            shouldComponentUpdate(nextProps, nextState) {
+                if(this.state.show !== nextProps.show) {
+                    this.setState({
+                        show: nextProps.show
+                    })
+                }
+                if(this.state.show !== nextState.show) {
+                    this.showList(nextState.show);
+                }
+                return false;
+            }
+            changeList() {
+                let show = !this.state.show
+                this.setState({
+                    show
+                });
+                if(show) {
+                    // console.log('操作其它项');
+                    // console.log(this.props.onchange)
+                    // console.log(this.props.index)
+                    this.props.onchange(this.props.index)
+                }
+                /*
+                * 1、隐藏当前，不需要改变列表状态
+                * 2、展开当前，隐藏其它项
+                * */
+            }
+            render() {
+                // console.log(this.state.show)
+                return (
+                    <div>
+                        <h2 className="header" onClick={this.changeList.bind(this)}>{this.props.data.name}</h2>
+                        {/*this.state.show ? <List data={this.props.data.list} /> : ""*/}
+                        <div className="listWrap" ref="list">
+                            <List data={this.props.data.list} />
+                        </div>
+                    </div>
+                )
+            }
+        }
+
+        class List extends React.Component {
+            render() {
+                return (
+                    <ul className="list">
+                        {
+                            this.props.data.map((item, index) => {
+                                return (
+                                    <li key={index}>
+                                        <p className={item.vip? "vip":""}>{item.username}</p>
+                                        <p className="message">{item.message}</p>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+                )
+            }
+        }
+
+
+        ReactDOM.render(
+            <Panel data={ dataList } />,
+            document.getElementById("container")
+        )
+    </script>
+</body>
+</html>

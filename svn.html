@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>svn命令</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+	https://blog.csdn.net/aizhiqiang2/article/details/53104002
+
+	<h3>checkout ---- co</h3>
+    <p>svn co svn://10.119.9.147/front_svn/uhealth/ /Users/lvtenglong/Documents/pengmeili/project/zhao.zui/ --username pengmeili --password 123456</p>
+
+
+	<h3>export</h3>
+	<p>svn export svn://localhost/测试工具 /home/testtools --username pengmeili --password 123456</p>
+
+
+	<h3>commit --- ci</h3>
+	<p>添加新文件</p>
+	<p>1、  svn add test.html</p>
+	<p>2、   svn commit -m "添加test.html" test.html</p>   --force
+
+
+	svn add * --force 
+	svn ci * -m ""
+
+	<p>提交本目录下所有在版本控制下的文件</p>
+	svn commit -m "add all files" *
+
+	<h3>update</h3>
+	<p>svn update</p>
+	<p>svn updata -r 版本号 文件名</p>
+	<p>svn update 文件名</p>
+
+	<h3>delete</h3>
+	<p>svn delete test.php </p>
+	<p>svn ci -m “删除测试文件test.php”</p>
+
+	<h3>svn 创建分支 </h3>
+	1、创建分支<p>svn cp svn://10.119.9.166/front_svn/luckydraw/applizi svn://10.119.9.166/front_svn/luckydraw/appliziV1.2 -m "增加矿云绑定/任务列表改版/粒子详情改版"</p>
+
+
+	2、取出分支来开发   cd 到本地分支进行开发 
+	<p>svn co svn://10.119.9.166/front_svn/luckydraw/appliziV1.2 /Users/pengmeili/Documents/project/appliziV1.2 </p>
+
+	切换分支 
+	<p>svn switch svn://10.119.9.166/front_svn/luckydraw/appliziV1.2</p>
+
+	合并分支
+	(1)主分支合并到分支上
+	<p>cd 到分支上</p>
+	<p>svn merge 主分支</p>
+
+	(2)分支合并到主干 
+	<p>cd 到主分支上</p>
+	<p>svn merge -r 分支</p>
+	<p>svn merge --reintegrate 分支</p> //分支合并到主干中完成后应当删该分支，因为在SVN中该分支已经不能进行刷新也不能合并到主干。
+
+	
+
+	检查需要合并的分支的历史:
+	svn log --stop-on-copy -q 分支
+
+	合并版本并将合并后的结果应用到现有的分支上
+	<p>svn -r 148:149 merge 主分支</p>
+
+
+	2.3检查冲突： 
+	svn status 
+	如果有解决冲突，没有就svn commit命令就可以完成提交 
+
+ 
+	svn解决冲突   https://www.jianshu.com/p/e3cc83ca512d
+	svn resolve --accept working    //https://blog.csdn.net/github_36409600/article/details/52938826
+
+	删除分支  svn rm svn://10.119.9.166/front_svn/luckydraw/appliziV1.2 -m "delete branch"    在主分支上删除
+
+
+	svn 查看提交日志命令
+
+	svn log -l 3   查看最新3条
+	svn log activity/lucky/luckyIndex.js  查看具体某个文件的提交日志
+
+
+	svn diff; #什么都不加，会坚持本地代码和缓存在本地.svn目录下的信息的不同;
+
+	svn diff -r 5:6;  #比较版本5和版本6之间所有文件的不同;
+	svn diff -r 3;  #比较你的本地代码和版本号为3的所有文件的不同;	
+	svn diff -r 3 text.c;  #比较你的本地代码和版本号为3的text.c文件的不同;
+
+	
+	svn 同时提交多个未提交过的文件：
+	svn add $(svn st | grep ? | sed 's/[\?][ ]//g')
+
+	svn switch --relocate  原地址 新地址
+
+
+	删除隐藏文件：
+		sudo find "需要删除的目录" -name ".DS_Store" -depth -exec rm {} \;
+		find . -type d -name ".svn"|xargs rm -rf 
+
+</body>
+</html>

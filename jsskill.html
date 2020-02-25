@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>js基础</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+<script>
+	//console.log('1.23' == 1.23);  //当字符串和数字比较的时候，字符串会转换成数字再比较
+	//console.log(0 == false) //true  
+	//console.log(null == undefined);//true
+	// var x = 'this is number' + 42;  //this is number42  字符串拼接
+	// var y = 42 + 'this is number'; //42this is number
+	
+	//技巧
+	// num - 0 转换成数字类型
+	//num + ''  转换成字符串类型
+
+	// ==== 类型不同，则返回false，类型相同：null === null,undefined === undefined，但是 NaN 不能和 NaN 比较，new object 也不等于 new object
+
+
+	//隐式转换 ==
+	// null == undefined 相等
+	// number == string  转number 1 == '1.0'  true
+	//boolean == ? 转number 1 == true   true
+	//object == number/string  尝试将对象转为基本类型  new string('hi') == 'hi'  true  其它为false
+
+
+	//类型检测
+	// typeof 函数对象或基本类型   特殊  typeof null === 'object' 遇到 null时失效 
+	// instanceof  返回对象的类型  instanceof 方法要求开发者明确地确认对象为某特定类型   适合自定义对象，也可以用来检测原生对象，在不同的iframe和window间检测失效
+		// var oStringObject = new String("hello world"); 
+		// console.log(oStringObject instanceof String);   
+
+	//Object.prototype.toString	  通过{}.toString拿到，适合内置对象和基元类型，遇到 null 和 undefined 失效，ie6/ie7/ie8 返回[object object]
+
+	//属性访问表达式
+	// var o = {x:1}
+	// 访问：o.x 或 o['x']
+
+
+	// 运算符：
+	// delete:
+	// var obj = {x:1};
+	//	delete obj.x
+
+	// var obj1 = {};
+	// Object.defineProperty(obj1,'x',{
+	// 	configurable:false,
+	// 	//configurable:true,
+	// 	value:1
+	// }）
+	// delete obj1.x //false
+
+
+	//没有块级作用域 两种方式一样都能在取到i的值
+	// for(var i = 0; i< 3; i++){
+	// 	console.log('aa')
+	// }
+	// console.log(i)
+
+	// var i = 0;
+	// for(;i<3;i++){
+	// 	console.log('aa')
+	// }
+	// console.log(i)	
+
+	//var 定义多条语句
+	//var a=1,b=2;
+
+
+	//try-catch-finally  try后面只能跟一个catch和finally
+	// try {
+	// 	throw 'test';
+	// } catch(e) {
+	// 	console.log(e);
+	// } finally {
+	// 	console.log('finally');
+	// }
+
+	//函数
+
+	//函数声明  可以在函数面前去调用的，能调用成功
+
+	test(); //true
+	function test(){
+		//do something
+		return true;
+	}
+
+	//函数表达式  不可以在函数前面去调用  
+	test1()  //typeError
+	var test1 = function(){
+		//do something
+	}
+
+	//for in   
+	// 坑：
+	// 	1.顺序不确定
+	// 	2.enumberable为false时不会出现
+	// 	3.for in 对象属性时受原型链的影响
+	// var p;
+	// var obj = {x:1,y:2}
+	// for(p in obj){}
+
+
+	var val = 2;
+	switch (val) {
+		case 1:
+			console.log(1);
+			break; //如果不加break, 程序会往下走
+		case 2:
+			console.log(2)
+			break;
+		default:
+			// statements_def
+			break;
+	}
+
+	var val = 2;
+	switch (val) {
+		case 1: 
+		case 2:
+		case 3:
+			console.log(1,2,3); //当val等于1或2或3的时候会
+			break; //如果不加break, 程序会往下走
+		case 4:	 
+		case 5:
+			console.log(4,5)
+			break;
+		default:
+			// statements_def
+	}
+
+
+	//js 的严格模式
+	//用法 ：
+
+	//'user strict';  全局的
+	function aa(){
+		'user strict';
+		//do something
+	}
+	1.不允许使用width
+	2.所有变量必须声明，赋值给声明的变量报错，而不是隐式创建全局变量
+	3.eval中的代码不能创建eval所在作用域下的变量、函数。而是为eval单独创建一个作用域，并在eval返回时丢弃。
+	4.函数中的特殊对象arguments是表态副本，而不像非严格模式那样，修改arguments或修改参数变量会相互影响。
+	5.删除configurable = false的属性时报错，而不是忽略
+
+
+</script>
+    
+</body>
+</html>

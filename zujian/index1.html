@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>弹窗组件-加遮罩</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<style>
+	*{ padding: 0; margin: 0; }
+	.mask-layer{ position: fixed; border: 1px solid #ccc; background-color: #fff; z-index: 10;}
+	.mask-layer .title{ position: relative; height: 40px; line-height: 40px; background-color: #f5f5f5; font-size: 18px; font-weight: normal;}
+	.mask-layer .title span{ position: absolute; top: 0; right: 10px; font-size: 12px; cursor: pointer;}
+	.mask{ position: fixed; top: 0; left: 0; width: 100%; height:100%; background: #000; -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50); opacity: .5 }
+</style>
+<script>
+	window.onload = function(){
+		var aInput = document.getElementsByTagName('input');
+
+		aInput[0].onclick = function(){
+			var d1 = new Dialog();
+			d1.init({
+				isNow :0,
+				title:'登录'
+			});
+		}
+
+		aInput[1].onclick = function(){
+			var d2 = new Dialog();
+			d2.init({
+				isNow :1,
+				w:100,
+				h:200,
+				dir:'right',
+				title:'公告',
+				mask: true
+			});
+		}
+
+		aInput[2].onclick = function(){
+			var d2 = new Dialog();
+			d2.init({
+				isNow :2,
+				w:400,
+				h:400,
+				dir:'center',
+				title:'公告',
+				mask: true
+			});
+		}
+
+	}
+
+	function Dialog(){
+		var oLayer = null;
+		this.settings = {
+			w: 300,
+			h:300,
+			dir : 'center',
+			title:'',
+			mask:false
+		};
+	}
+
+	Dialog.prototype.json = {};
+
+	Dialog.prototype.init = function(opt){
+		extend(this.settings,opt);
+		if(this.json[opt.isNow] == undefined){
+			this.json[opt.isNow] = true;
+		}
+		if(this.json[opt.isNow]){
+			this.create();
+			this.FnColse();
+			if(this.settings.mask){
+				this.createMask();
+			}
+		}
+	};
+
+	Dialog.prototype.create = function(){
+		this.oLayer = document.createElement('div');
+		this.oLayer.className = 'mask-layer';
+		this.oLayer.innerHTML = '<h3 class="title">'+this.settings.title+'<span class="close">X</span></h3><div class="body"></div>';
+
+		document.body.appendChild( this.oLayer );
+
+		this.setDate();
+
+	};
+
+	Dialog.prototype.setDate = function(){
+		this.oLayer.style.width = this.settings.w + 'px';
+		this.oLayer.style.height = this.settings.h + 'px';
+
+		if(this.settings.dir == 'center'){
+			this.oLayer.style.left = (viewWidth() - this.settings.w)/2 + 'px';
+			this.oLayer.style.top = (viewHeight() - this.settings.h)/2 + 'px';
+
+		}else if(this.settings.dir == 'right'){
+			this.oLayer.style.right = 0;
+			this.oLayer.style.bottom = 0;
+		}
+	};
+
+	Dialog.prototype.FnColse = function(){
+		var closeBtn = this.oLayer.getElementsByTagName('span')[0];
+		var This = this;
+		closeBtn.onclick = function(){
+			document.body.removeChild( This.oLayer );
+			if(This.settings.mask){
+				document.body.removeChild( This.oMask );
+			}
+			This.json[This.settings.isNow] = true;
+		}
+	}
+
+	Dialog.prototype.createMask = function(){
+		var oMask = document.createElement('div');
+		oMask.className = 'mask';
+
+		document.body.appendChild(oMask);
+
+		this.oMask = oMask;
+	}
+
+	function viewWidth(){
+		return document.documentElement.clientWidth;
+	}
+
+	function viewHeight(){
+		return document.documentElement.clientHeight;
+	}
+
+	function extend(obj1,obj2){
+		for(var attr in obj2){
+			obj1[attr] = obj2[attr];
+		}
+	}
+</script>
+</head>
+<body>
+	<input type="button" name="" value="1">
+	<input type="button" name="" value="2">
+	<input type="button" name="" value="3">
+	<!--<div class="mask"></div>
+     <div class="mask-layer">
+    	<h3 class="title">公告</h3>
+    	<div class="body"></div>
+    </div> -->
+</body>
+</html>

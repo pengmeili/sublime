@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>requirejs</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<!-- <script src="js/require-2.1.11.js" data-main="js/main.js"></script> -->
+<script src="./js/lib/require/require-2.1.11.js"></script>
+<script src="js/main.js"></script>
+<script>
+	/*
+	好处：
+		1、异步加载文件，只在当某个方法用到的时候再加载文件
+		2、模块化开发 一个文件就是一个模块
+		3、减少全局变量
+	使用方法：
+		1、引入requirejs
+		2、require (调用模块)、define(定义模块)、require.config(配置模块)
+		3、调用文件  data-main   可不加.js 的后缀
+		
+	配置baseUrl:
+
+	requirejs 的加载机制：使用head.appendChild()将每一个依赖加载为一个script标签，加载即执行，可调用跨域js
+
+	paths : 映射不放于baseUrl下的模块名
+
+
+	定义模块的方式：
+		1、函数式定义  可以返回任何值
+
+		define('helper',['jquery'],function($){  
+			return {
+				trim : function(str){
+					return $.trim(str);
+				}
+			}
+		})
+
+
+		2、定义简单的键值对象  只能返回对象
+
+		define({
+			'name' : 'brain',
+			'sex' : 'male',
+			'age' : '4'
+		})
+
+
+		config shim: 加载不支持AMD的库
+
+		config map : 不同的模块加载不同的js 版本
+
+		map:{
+			"app/api" : {
+				"jquery" : "lib/jquery-2.1.4"
+			},
+			"app/api2" : {
+				"jquery" : "lib/jquery-2.1.5" 
+			},
+
+		}
+
+		urlArgs : 下载文件时，在url后面增加一个额外的query参数
+
+		waitSeconds : 10 // js 加载等待时间 默认为7s  设置为0时，则禁用等待
+
+		requirejs 插件：
+			文本插件：text.js
+			   text!../template/user.html
+
+	   		css 插件：css.js   
+	   			css!../src/css/jquery-ui.css
+
+	   		i18n ：国际化语言包支持 必须建立特定的目录nls 	是通过浏览器获取的，navigator.language（只读），设置浏览器的语言可以测试  
+
+
+	   打包工具：r.js		安装：r.js 
+	   	1、打包
+	   		打包单独的一个文件：
+
+
+	*/
+
+</script>
+</head>
+<body>
+    <button id="button">获取用户信息并打印</button>
+    <div id="userInfo">
+    	
+    </div>
+</body>
+</html>
