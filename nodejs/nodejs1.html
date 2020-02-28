@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>nodejs</title>
+</head>
+<script>
+  /*
+  * nodeJs = javascript 执行环境+javascript扩展的功能
+  * 简单理解:nodeJs 就是一个可以让javascript脱离浏览器还能执行的平台，并且这个平台对javascript功能进行了增强
+  *
+  * 官方解释：nodeJs是一个基于 chrome V8 引擎的javascript运行环境
+  *
+  * nodeJs 和 javascript 的区别：
+  *   1、nodeJs是一个可以运行javascript的平台
+  *   2、javascript是一门编程语言
+  *   3、nodejs使用的是事件驱动，非阻塞式I/O模型，使其轻量又高效
+  *
+  * */
+</script>
+<body>
+<!--
+  nodeJs = javascript 执行环境+javascript扩展的功能
+  简单理解:nodeJs 就是一个可以让javascript脱离浏览器还能执行的平台，并且这个平台对javascript功能进行了增强
+    官方解释：nodeJs是一个基于 chrome V8 引擎的javascript运行环境
+    nodeJs 和 javascript 的区别：
+    1、nodeJs是一个可以运行javascript的平台
+    2、javascript是一门编程语言
+
+   ------------------------------------------------------------------
+  nodejs官网：中文nodejs.cn
+
+    win+R 打开cmd
+      常用DOS命令：
+        e: 切到e盘
+        dir：显示文件夹中（mac 上使用ls）
+        cd 文件夹 ：进入指定文件夹
+        cd ../ 返回上级目录
+        cd / 返回到要目录
+        exit 快速退出DOS
+        直接在文件夹中的地址栏中输入cmd，快速在dos中打开此路径
+
+    运行node.js
+      1、REPL模式：退出按两次ctrl+C
+        直接在node环境里输入node，然后可以直接输入js代码，一般不用此方法做开发，做测试可以使用
+      2、node js文件
+
+      AMD:
+      CMD:
+      CommonJS
+
+    nodejs 模块化：
+      1、什么是模块化：
+        nodejs中，所有的功能都是模块形式存在的，每一个文件就是一个模块；
+        所有用户编写的代码自动封装在一个模块中；
+        模块写与模块之间相互独立，如果说要在一个模块中使用另一模块的功能，就需要引入模块，另一个模块就需要暴露出来
+
+      2、主模块：
+        一个项目只允许有一个主模块，通常命名为app.js/index.js/main.js
+        主模块是整个项目的启动模块，主模块对项目的其它模块进行统筹调度。
+
+      3、模块的组成：
+        所有用户编写的代码都放在模块中，模块就是文件(函数)
+        console.log(arguments.callee.toString())
+        function (exports, require, module, __filename, __dirname) {
+          console.log(arguments.callee.toString())
+          var show = require('./test');
+          console.log(show)
+          console.log(show.show())
+        }
+
+        exports:
+          作用：暴露对象，可以将数组暴露给引用的地方
+          语法：
+            exports.属性名=值;
+            exports.方法名=函数;
+            module.exports=对象或函数;
+          注意：
+           a. exports是module.exports对象的引用
+           b. exports = module.exports，exports 不能改指向，只能添加属性和方法；
+           c. module.exports 才是真正的暴露对象，指向哪里就暴露哪里
+              module.exports = show; 暴露的是函数
+
+        require: 引用模块的函数，用于在一个模块中引入另一个模块，并且将子模块暴露的数据赋值给变量，如果模块后缀为.js、.json、.node时可以不用写
+          模块的分类：
+            1、自定义模块，用户编写的文件
+              注意事项：
+                a. 如果子模块没有暴露数据，则返回空对象 require('./文件名')
+                b. 自定义模块前必须加./，因为在nodejs中查找模块默认在node_modules中查找
+
+            2、第三方模块 可以使用npm安装的插件，必须先安装后使用  npm安装包 npmjs.com  在node_modules下包引入直接就写包名就行
+              安装方法：
+                npm install 包名
+              引入：
+                require('jquery')
+            3、系统模块
+              node.js开发团队已经开发好的功能模块，直接引用即可使用，不需要安装，如：fs、path、http、url等
+              引入：
+                require('fs')
+            4、注意事项：
+              a. 语法错误
+              b. 模块路径错误
+              c. 一个模块多次被引入，只执行一次，将暴露对象放入缓存中，再次调用时直接在缓存里拿
+
+        module: 模块对象，包含了当前模块的所有信息
+          module.exports 【重点】真正暴露对象，exports对象只是对它的引用
+
+          module.id 模块的ID，模块名称
+          module.parent 模块的父级
+          module.filename 模块文件名及路径
+          module.children 子模块列表
+          module.paths  模块查找路径，如果当前目录下找不到node_modules，就会去上一级目录查找，直到根目录，
+                        如果配置了NODE_PATH环境变量，则会再去环境变量指向的路径查找
+
+
+
+        _filename: 当前模块的文件名
+        _dirname: 当前模块所有的路径(目录路径)
+=======================================================================================================
+  npm：
+    node package manager 是基于node的包管理工具 https://www.npmjs.com/
+    模块的基本单位是js文件
+    包 === 项目
+    模块 === 文件
+
+  package.json： node.js 项目的包描述文件，以JSON格式的形式
+    1、创建：
+      npm init // 手动创建
+      npm init -y // 自动创建
+
+    2、常用属性：
+      name          项目名称
+      version       项目版本号
+      description   项目描述
+      main          主模块名称
+      dependencies    依赖列表
+      devDependencies 开发环境依赖列表
+      scripts       脚本，可以使用npm命令执行 npm test
+      license       开源协议
+
+    3、npm 常用命令
+      安装命令：
+        npm install <包名> 缩写：npm i <包名>
+        npm i <包名>@版本号  // 安装指定版本
+        npm i <包名> -g // 全局安装，安装位置：C:\Users\pengml1\AppData\Roaming\npm\node_modules
+        npm i <包名> --save  // 将安装包写入package.json依赖列表
+        npm i <包名> --save-dev  // 将安装包写入package.json开发依赖列表
+
+      其它命令：
+        npm search <包名> // 搜索包 ???报错
+        npm info jquery  // 查看包名
+        npm view <包名>  // 查看包的信息
+        npm uninstall <包名> // 卸载包
+        npm update <包名> // 更新包
+
+    4、淘宝镜像
+      cnpm
+        安装：
+          npm install -g cnpm --registry=http://registry.npm.taobao.org/
+        作法：
+          与npm命令及参数一样，以cnpm 开始
+
+    5、控制台输出命令：
+      console.log();
+      console.dir();
+      console.error();
+      console.time();
+      console.timeEnd();
+      console.assert(表达式, '输出内容');//如果断言为false，则将一个错误消息写入控制台。如果断言是 true，没有任何反应,v10.0以后不会中断程序
+
+    6、node.js的作用域：
+      1、由于node.js在执行里会资将用户编写的所有代码都封装在函数中，所有用户定义的变量或函数都是局部的
+        要将数据共享给其它模块使用有两种方法：
+          a、module.exports
+          b、全局对象global 尽量少用
+            global.属性或方法=值;
+            调用:global.属性或方法或是省略global
+================================================================================================================
+    7、nodeJS回调函数
+      1)什么是回调函数：将函数a作为参数传入b函数，b函数在执行过程中根据时机或条件决定是否调用a函数，a函数就是回调函数；
+        function show(){
+          console.log('aaaa')
+        }
+        setTimeOut(show,1000) //
+        解析：
+          setTimeout(fn,time){
+            ...计时....
+            fn(); // 执行
+          }
+      2)回调函数的机制：
+        a.定义一个普通函数(可用做回调函数);
+        b.将函数作为参数传入另外一个函数
+        c.调用者在执行过程中根据时机或条件来决定是否调用函数
+      3)用途：
+        事件注册或是异步函数
+        btn.addEventListener('click',function(){ //这里就称为回调函数 })
+        eg:
+          取数据 回调函数.html
+
+    8、同步和异步的区别：
+        同步：只有等前一个任务执行完成才能执行下一个任务的模式，缺点：会产生阻塞;
+        异步：以任务线程的模式实现，开始执行一个任务，但是不会让后面的任务等待，后面的任务可能继续执行，任务执行完成后会通知(回调);
+        同步例子：
+          console.log(1111);
+          console.log(2222);
+          console.time('t1');
+          for(var i = 0; i < 99999999; i++ ){
+          }
+          console.timeEnd('t1')
+          console.log(3333); // 必须等待for循环结束之后才能输出
+          执行结果：1111 2222 t1:193.697021484375ms  3333
+
+        异步例子：
+          console.log(1111);
+          console.log(2222);
+          setTimeout(function(){
+            console.time('t1');
+             for(var i = 0; i < 99999999; i++ ){
+            }
+            console.timeEnd('t1');
+          },1000)
+          console.log(3333);  // 不需要等for循环完成就可执行
+          执行结果：
+            1111  2222  3333 t1 41.407958984375ms
+
+        同步异步一起使用：
+          console.log(1111);
+          console.log(2222);
+          setTimeout(function(){
+            console.log(3333)
+          },0);
+          console.time('t1');
+          for(var i=0;i<99999;i++){
+          }
+          console.timeEnd('t1');
+          console.log('4444')
+          执行结果：1111 2222 t1 2.23974609375ms 4444 3333
+
+      异步的轮询机制：https://www.cnblogs.com/lan-cheng/p/10223455.html
+
+      异步的三种实现方式：
+        1、回调函数：
+          回调函数不一定是异步的，但是异步一这是回调函数
+        2、事件
+        3、promise
+
+
+
+ -->
+</body>
+</html>

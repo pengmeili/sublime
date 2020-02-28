@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>回调函数</title>
+</head>
+<body>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script>
+  ;(function () {
+    $.fn.show = function (url,fn) {
+      var iframe = $('<iframe src="'+ url +'"></iframe>').appendTo('body');
+      iframe.on('load',function () {
+        var data = $(this.contentDocument).find('body').text();
+        data = JSON.parse(data)
+        fn(data); // 拿到数据成功以后才执行
+      })
+    }
+  })();
+  $('body').show('./js/data.json',function (e) {
+    console.log(e)
+  })
+</script>
+</body>
+</html>
