@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= htmlWebpackPlugin.options.title%></title>
+</head>
+<body>
+  <div class="home">
+    <div>this is home page</div>
+    <div>time: <%= htmlWebpackPlugin.options.date%></div>
+    <!-- 可以对到htmlWebpackPlugin的files和options里的变量 -->
+<!--    <% for(var key in htmlWebpackPlugin.files) {%>-->
+<!--      <%=key %> : <%= JSON.stringify(htmlWebpackPlugin.files[key]) + '\n' %>-->
+<!--    <%}%>-->
+<!--    <% for(var key in htmlWebpackPlugin.options) { %>-->
+<!--      <%= key%> : <% JSON.stringify(htmlWebpackPlugin.options[key]) %>-->
+<!--    <%}%>-->
+    <a href="../user/index.html">user</a>
+    <img id="img" src="../images/bg.png" width="200" alt="">
+  </div>
+</body>
+</html>

@@ -1,0 +1,78 @@
+@charset "UTF-8";
+/*
+  不固定参数的mixin申明
+*/
+/*
+ * this is home page css
+ * 支持的数据类型：
+ * 数字： 1，3，13，10px
+ * 字符串，有引号、无引号： "foo"，'foo'， foo
+ * 颜色： blue,#04a3f9,rgba(0,0,0,.4)
+ * 布尔值： true、false
+ * 空值： null
+ * 数组(list)，用空格或逗号隔开： 1.5em 1em .2em, Helvetica,Arial,sans-serif
+ * maps 相当于javascript中的object(key1: value1, key2: value2)
+ * scss 以_开头命名的文件不会被file watcher自动编译成css文件
+ */
+html {
+  background-color: #fff; }
+  html p {
+    font-size: 20px;
+    *height: 1%;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5); }
+    html p:after {
+      clear: both;
+      content: '.';
+      display: block;
+      height: 0;
+      line-height: 0;
+      overflow: hidden; }
+
+.puma-icon {
+  background-image: url("/images/puma.png"); }
+
+.sea-slug-icon {
+  background-image: url("/images/sea-slug.png"); }
+
+.egret-icon {
+  background-image: url("/images/egret.png"); }
+
+.salamander-icon {
+  background-image: url("/images/salamander.png"); }
+
+.bg, .bg1, .bg2, .bg3 {
+  background-image: url("../images/icon.png");
+  background-size: cover;
+  width: 50px;
+  height: 50px; }
+
+.bg1 {
+  background-position: -50px 0; }
+
+.bg2 {
+  background-position: -100px 0; }
+
+.bg3 {
+  background-position: -150px 0; }
+
+.funky {
+  width: 50px;
+  font-family: "Microsoft YaHei";
+  font-size: 14px;
+  font-line-height: 30px;
+  font-weight: bold; }
+
+#main {
+  width: 50px;
+  color: #00AD72; }
+  #main-silder {
+    height: 50px;
+    border: 1px solid red; }
+  #main-top {
+    height: 40px;
+    line-height: 40px; }
+
+.test {
+  height: 50px; }
+
+/*# sourceMappingURL=sass.css.map */

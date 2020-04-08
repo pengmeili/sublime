@@ -1,0 +1,7 @@
+body{
+    background-color: red;
+    border: 5px solid yellow;
+}
+ul, li{
+    list-sytle:none;
+}

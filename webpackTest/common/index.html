@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webpack</title>
+    <script>
+        /*
+        * 安装步骤：
+        *   1、npm init
+        *   2、npm install webpack -g  全局安装
+        *   3、npm install webpack --save-dev && npm install webpack-cli --save-dev
+        *   4、打包命令：node_modules\.bin\webpack app\main.js -o common\index.js   window路径中的/要使用反斜杠\
+        *   5、webpack.config.js 说明：__dirname是node.js中的一个全局变量，它指向当前执行脚本所有的目录，有了配置文件，打包命令为node_modules\.bin\webpack
+        *   webpack.config.js主要参数：
+        *   1、publicPath：配置发布到线上资源的URL前缀，string，默认为空，即使用相对路径
+        *   2、module/rules/
+        *       test: 一个用于匹配loaders要处理的文件的扩展名的正则表达式(/\.js$/)
+        *       loader: loader的名称(vue-loader、babel-loader)
+        *       include/exclude: 手动添加必须处理的文件(夹)/或屏蔽不需要处理的文件(夹) 非必填
+        *
+        * 构建本地服务器
+        *   安装webpack-dev-server 可以监听代码的修改并自动刷新
+        *   主要参数：
+        *       contentBase：本地服务器在哪个目录下搭建页面
+        *       historyApiFallback：当我们搭建spa应用时非常有用，它使用的是HTML History Api,任意的跳转或404响应都可以指向index.html
+        *       inline:  用来支持dev-server自动刷新的配置，webpack有两种模式支持自动刷新，一种是iframe模式，一种是inline模式；使用iframe模式是不需要在devServer进行配置的，只需使用特定的URL格式访问即可；不过我们一般还是常用inline模式，在devServer中对inline设置为true后，当我们启动webpack-dev-server时仍要需要配置inline才能生效
+        *       hot: 启动webpack热模块替换特性
+        *       port: 监听的端口，默认端口为8080
+        *       compress: 压缩，对所有的服务器资源采用gzip压缩
+        *           优点：对JS，CSS资源的压缩率很高，可以极大得提高文件传输的速率，从而提升web性能
+                    缺点：服务端要对文件进行压缩，而客户端要进行解压，增加了两边的负载
+        *       overlay:
+        *
+        *   模块化处理
+        *       css：有两种处理css的工具，二者组合在一起可以把样式表嵌入webpack打包后的js文件中
+        *           1、css-loader：能够使用类似@import和url(...)的方法实现required功能
+        *           2、style-loader：将所有的计算后的样式加入页面中
+        *           3、如果要使用sass，需要安装sass-loader和node-sass
+        *       加载及打包图片：file-loader/url-loader
+        *           url-loader可将图片转换成base64格式
+        *       打包html：html-webpack-plugin
+        *           作用：
+        *           1)为html文件中引入的外部资源script,js,css
+        *           2)可能生成创建html入口文件
+        *           参数：
+        *               title: 生成html文档的标题
+        *               filename: 输出文件的文件名称，默认为index.html,也可指定路径(html/index.html)
+        *               template: 本地模板文件的位置
+        *               excludeChunk: [a,b]  除了a,b外的js 都加载进来
+        *
+        *       clean-webpack-plugin：构建的时候自动删除output的文件
+        *       webpack-aliyun-oss：自动上传静态资源到阿里云oss
+        *
+        *       webpack --config webpack.dev.config.js   指定打包配置文件，默认为webpack.config.js
+        *
+        * */
+    </script>
+</head>
+<body>
+    <div class="" id="root"></div>
+    <div>
+        module.exports = {
+            entry: {},  //入口起点，指示webpack应用使用哪个模块 支持String|Array|Object
+            output: {}, //出口，告诉 webpack 在哪里输出它所创建的 bundles，以及命名文件default: './dist'
+            module: {}, //loader插件，处理一些非javascript代码，转化为可用的代码
+            plugins: [], //webpack相关插件
+            resolve: {}, //用于帮助找到模块的绝对路径。一个模块可以作为另一个模块的依赖模块，然后被后者引用
+            devServer: {},//通过node起一个本地服务器，webpack-dev-server完成一些代理，mock数据热加载等功能
+            devtool: '',//此选项控制是否生成，以及如何生成 source map。主要用于开发和生产代码类型
+            mode: '', //模式
+            optimization: {}//优化生成的文件，如合并commonsChunks等
+        }
+    </div>
+    <script type="text/javascript" src="index.js"></script>
+</body>
+</html>

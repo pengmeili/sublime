@@ -14,4 +14,8 @@ console.log(userAgent)
 //   console.log(data.toString())
 // })
 
+// var ab = new ArrayBuffer(10);
+// var buf = Buffer.from(ab,0,9)
+// console.log(buf.length)
+
 

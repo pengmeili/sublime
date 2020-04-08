@@ -1,0 +1,13 @@
+html,body,div,section,header,aside,footer,ol,ul,li,p,h1,h2,h3,h4,h5,h6{
+  padding: 0;
+  margin: 0;
+}
+html,body{
+  background: #fff;
+}
+ol,ul{
+  list-style: none;
+  li{
+     list-style: none;
+   }
+}

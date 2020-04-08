@@ -15,3 +15,4 @@ module.exports = show;
 console.log(exports === module.exports) // true
 
 global.userAgent = 'web' // 调用 global.userAgent 或是userAgent
+

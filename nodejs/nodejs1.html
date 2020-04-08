@@ -43,6 +43,11 @@
     运行node.js
       1、REPL模式：退出按两次ctrl+C
         直接在node环境里输入node，然后可以直接输入js代码，一般不用此方法做开发，做测试可以使用
+        ctrl + c - 退出当前终端。
+        tab 键 - 列出当前命令
+        ctrl + d - 退出 Node REPL.
+
+
       2、node js文件
 
       AMD:
@@ -239,10 +244,151 @@
       异步的轮询机制：https://www.cnblogs.com/lan-cheng/p/10223455.html
 
       异步的三种实现方式：
-        1、回调函数：
+        1、回调函数：  回调函数.html
           回调函数不一定是异步的，但是异步一这是回调函数
+          arr.forEach()  // 为同步
         2、事件
-        3、promise
+          事件源.on('事件名称',回调函数)
+            eg:异步-事件.js
+        3、promise:
+           1、ES6中新增的承诺对象，用于对异步的操作进行消息的传递。
+           2、三种状态：
+              Pending 等待中..
+              Resolved 成功
+              Rejected 失败
+              Pending -> Resolved  成功
+              Pending -> Rejected  失败
+          3、作用：传递异步消息
+================================================================================
+  Buffer 缓存区、缓冲器   https://www.runoob.com/nodejs/nodejs-buffer.html
+    1、在内存中开辟一个临时区域用于存储需要运算的字节码
+    2、创建缓存区：
+      1) 指定长度
+        英文字母在缓存中占用一个字节，一个汉字在缓存中占用三个字节
+    3、写入缓存区：
+      fill,write
+    4、读取缓存区：
+      buf.toString()
+    5、复制缓存区
+      buf1.copy(buf2)
+=================================================================================
+  fs文件系统：
+    1、读取文件：
+      由于node.js是服务器端程序，必须要有读写文件操作，客户端没有这样的功能；
+      文字读写方式有两种：
+        1)直接读取：将硬盘上的所有内容全部读入内存以后才触发回调函数
+          两种写法：
+            异步：
+              fs.readFile('文件路径',function(错误对象,数据){})
+            同步：几乎所有的fs函数都有同步版本，只需要在异步版本后面添加Sync即可
+              var data = fs.readFileSync('文件路径');
+         2)流式读取：从硬盘中读取一截就触发回调函数，实现大文件操作
+
+    2、写文件：
+        1)异步：
+          fs.writeFile('文件路径','写入的内容',function(err){
+            if(err) return console.log(err)
+            console.log('写入成功')
+          }) // 回调函数只包含错误信息(无权限、冲突时等)
+
+        2) 同步：
+          fs.writeFileSync(file,data[,option])
+
+    3、读取文件信息：
+      fs.stat('文件名',function(err, state){
+        //size:大小
+        //mtime: 文件修改时间
+        //birthtime  文件创建时间
+        //方法
+        // state.isFile() 是否是一个文件
+        // state.isDirectory() 是否是目录
+      })
+
+    4、删除文件： deleteDir.js
+      fs.unlink(file,callBack)
+      fs.rmdir(file,callBack)  删除目录
+      实践：删除一个非空目录
+
+    5、文件流 stream
+     1、什么是流：所有互联网传输的数据都是以流的方式，流是一组有起点和终点的数据传输方式
+     2、流的操作
+      1)流式读取文件：
+        一节一节的读取数据，一节64kb===>65536字节
+      2)以流的方式写入文件
+        一节一节的写入
+
+   管道：可以实现对大文件的操作（文件大小超过内存）
+    pipe是一种输入与输出流之间传输数据的机制，
+    输出流.pipe(输入流)
+
+    链式流：将多个管道连接起来，进行链式操作。
+      输出流.pipe(中转流).pipe(跳转流).pipe(...).pipe(输出流);
+
+  path模块：
+    path.normalize() // 格式化路径
+    path.join()  // 将多个字符串拼接在成一个完整路径
+    path.dirname() // 返回路径中的文件夹
+    path.basename() // 返回路径中的文件,包括文件名和扩展名
+    path.extname() // 返回路径中的扩展名
+
+
+  URL模块：
+    nodejs的URL模块，提供了两套url进行处理的api功能;
+      1)老的url模块
+      2)标准的WHATWG URL模块
+    URL的构成：http://user:pass@sub.example.com:8080/p/a/t/h?query=string&query1=string1#hash
+      1、协议(protocol)：
+      2、用户名:密码(username:password);
+      3、域名(hostname)：两部分：域(com/cn/org)名(自定义)
+      4、端口号：默认为80端口，https的端口为443
+      5、目录名(文件名+扩展名)：可以是多层
+      6、参数(参数名=数名&参数1=参数1)
+      7、哈希地址：#开关，前端的关键参数，单页面应用，不会刷新页面
+
+    HTTP协议：
+      hypertext transfer protocol 超文本传输协议；是TCP/IP上的一个应用层
+
+      软件开发模式：
+        1、单机模式  如：word，打开客户端就能使用
+        2、C/S模式：客户端和服务器端，需要下载安装以后能才连接网线使用，如：QQ、迅雷，有更新需重新安装
+        3、B/S模式：web客户端和web服务端：打开网址就能使用
+
+
+        get 请求：
+          模仿从客户端从服务器获取数据
+          直接嵌入在url中，url是完成的请求路径，包括了?问号后面的部分，url.parse可以解析参数
+          http.get('url',function(res){
+            // res 是返回对象
+          })
+
+
+
+    node 服务器： server.js
+      以请求头的方法传入参数，Request Headers
+        var server =http.createServer();
+        server.on('request', function(req,res){
+          // req: 请求对象，包含了客户端的所有数据，包含了请求头和请求体
+          // res: 响应对象，包含了服务器端发送给服务端的所有数据，包含了响应头和响应体
+          // req、res都是以流的方式传输的
+          res.write('<h1>hello</h1>');
+          res.write('<p>word</p>');
+          res.end();
+        })
+        //监听服务器80端口
+        server.listen(80,function(){
+          console.log('80端口服务器已启动....')
+        })
+
+        查看所有的本机的端口号：netstat -a | netstat -ab
+
+       需求：根据不同的请求返回不同的内容
+
+
+
+
+
+
+
 
 
 
