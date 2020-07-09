@@ -15,8 +15,14 @@
 <!--    <% for(var key in htmlWebpackPlugin.options) { %>-->
 <!--      <%= key%> : <% JSON.stringify(htmlWebpackPlugin.options[key]) %>-->
 <!--    <%}%>-->
-    <a href="../user/index.html">user</a>
-    <img id="img" src="../images/bg.png" width="200" alt="">
+    <a href="./user/index.html">user</a>
+    <img id="img" src="app/images/test.png" width="200" alt="" />
+    <div id="app"></div>
+    <script>
+      $(function() {
+        console.log($("body"));
+      })
+    </script>
   </div>
 </body>
 </html>
