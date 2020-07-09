@@ -151,6 +151,7 @@
                         {
                             this.props.data.map((item, index) => {
                                 return (
+                                  // 当你在 map() 方法的内部调用元素时，你最好随时记得为每一个元素加上一个独一无二的 key。
                                     <li key={index}>
                                         <p className={item.vip? "vip":""}>{item.username}</p>
                                         <p className="message">{item.message}</p>

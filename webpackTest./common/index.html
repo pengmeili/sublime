@@ -10,7 +10,7 @@
         *   2、npm install webpack -g  全局安装
         *   3、npm install webpack --save-dev && npm install webpack-cli --save-dev
         *   4、打包命令：node_modules\.bin\webpack app\main.js -o common\index.js   window路径中的/要使用反斜杠\
-        *   5、webpack.config.js 说明：__dirname是node.js中的一个全局变量，它指向当前执行脚本所有的目录，有了配置文件，打包命令为node_modules\.bin\webpack
+        *   5、webpack.config.base.js 说明：__dirname是node.js中的一个全局变量，它指向当前执行脚本所有的目录，有了配置文件，打包命令为node_modules\.bin\webpack
         *   webpack.config.js主要参数：
         *   1、publicPath：配置发布到线上资源的URL前缀，string，默认为空，即使用相对路径
         *   2、module/rules/
@@ -52,6 +52,12 @@
         *       webpack-aliyun-oss：自动上传静态资源到阿里云oss
         *
         *       webpack --config webpack.dev.config.js   指定打包配置文件，默认为webpack.config.js
+        *
+        *   处理模板文件：
+        *       1、当成模板字符串
+        *       2、当成已经编译好的模板函数
+        *           了解模板语法、引擎、作用
+        *       html-loader:
         *
         * */
     </script>

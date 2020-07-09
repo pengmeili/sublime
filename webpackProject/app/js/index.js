@@ -1,7 +1,20 @@
-const bg = require('../images/test.png')
-const imgSrc = 'html'
-function home() {
-  const img = document.getElementById('img');
-  img.setAttribute('src', bg)
+import '../css/index.css';
+import '../common/reset.css';
+import Layer from '../components/layer/layer';
+// import img from '../images/test.png'
+var $ = require('jquery');
+
+const App = function () {
+  var dom = document.getElementById('app');
+  var layer = new Layer();
+  // dom.innerHTML = layer.tpl;
+  dom.innerHTML = layer.tpl({
+    name: 'john',
+    arr: ['apple','banana']
+  })
 }
-home();
+
+new App();
+$(function () {
+  console.log($('#app').html())
+})

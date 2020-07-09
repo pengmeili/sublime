@@ -1,5 +1,6 @@
 @import "mixin";
 $width: 50px;
+
 /*
  * this is home page css
  * 支持的数据类型：
@@ -12,57 +13,65 @@ $width: 50px;
  * maps 相当于javascript中的object(key1: value1, key2: value2)
  * scss 以_开头命名的文件不会被file watcher自动编译成css文件
  */
+
 // common
-html{
-  background-color: #fff;
-  p{
-    font-size: 20px;
-    @include clearfix; // 调用mixin中的 clearfix
-    @include shadow(0 1px 10px rgba(0,0,0, .5))
-  }
-}
-@each $animal in puma, sea-slug, egret, salamander {
-  .#{$animal}-icon {
-    background-image: url('/images/#{$animal}.png');
-  }
+html {
+    background-color: #fff;
+    p {
+        font-size: 20px;
+        @include clearfix; // 调用mixin中的 clearfix
+        @include shadow(0 1px 10px rgba(0, 0, 0, .5))
+    }
 }
 
-.bg{
-  background-image: url('../images/icon.png');
-  background-size: cover;
-  width: 50px;
-  height: 50px;
+@each $animal in puma,
+sea-slug,
+egret,
+salamander {
+    .#{$animal}-icon {
+        background-image: url('/images/#{$animal}.png');
+    }
 }
+
+.bg {
+    background-image: url('../images/icon.png');
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+}
+
 @for $i from 1 through 3 {
-  .bg#{$i}{
-    @extend .bg;
-    background-position: -#{$i*50}px 0;
-  }
+    .bg#{$i} {
+        @extend .bg;
+        background-position: -#{$i*50}px 0;
+    }
 }
 
-.funky{
-  width: $width;
-  font: {
-    family: "Microsoft YaHei";
-    size: 14px;
-    line-height: 30px;
-    weight: bold;
-  }
+.funky {
+    width: $width;
+    font: {
+        family: "Microsoft YaHei";
+        size: 14px;
+        line-height: 30px;
+        weight: bold;
+    }
 }
-#main{
-  $height: 50px !global; // 块级内申明 ！global 提升为全局变量后面的样式可用
-  width: $width;
-  color: #00AD72;
-  &-silder{
+
+#main {
+    $height: 50px !global; // 块级内申明 ！global 提升为全局变量后面的样式可用
+    width: $width;
+    color: #00AD72;
+    &-silder {
+        height: $height;
+        border: 1px solid red;
+    }
+    &-top {
+        height: 40px;
+        line-height: 40px;
+    }
+}
+
+.test {
     height: $height;
-    border: 1px solid red;
-  }
-  &-top{
-    height: 40px;
-    line-height: 40px;
-  }
+    width: $width;
 }
-.test{
-  height: $height;
-}
-

@@ -14,10 +14,10 @@
 <body>
 <div id="example"></div>
     <script type="text/babel">
-
+            MVC:modle(模型)-view(视图)-controller(控制器)
         /*  创建一个脚手架react工程
             安装全局
-                npm install -g create-react-app
+                npx install -g create-react-app  // npmx 是npm5.2+ 附带的package运行工具
                 create-react-app player-list
                 npm start
             生命周期：
@@ -27,7 +27,7 @@
                 render() 渲染
                 componentDidMount() 组件被挂载完成时调用一次，可以在这里使用refs
 
-            2、卸载（umount）(组件从页面中移走)
+            2、卸载（unmount）(组件从页面中移走)
                 componentWillUnmount() 即将制裁卸载(没有卸载完成)
 
             3、更新
@@ -40,7 +40,7 @@
 
                 render() 渲染
 
-                compenentDidUpdate(prevProps, prevState)  更新完成
+                componentDidUpdate(prevProps, prevState)  更新完成
 
 
 
@@ -50,7 +50,7 @@
         *   javascript XML
         *   基于javascript的语言，融合了XML，我们可以在js中书写XML
         *   XML中可以包含子元素，但是结构中只能有一个顶级元素
-            支持报插值表达式 {表达式}
+            支持插值表达式 {表达式}
         *
         * ReactDom.render(需要渲染的内容, 放置内容的容器)
         *   容器不能是body
@@ -89,13 +89,577 @@
             返回上一页：
                 this.props.router.history.goBack()
 
-            redux：是单独的一个方法，不依赖react
+            redux：是单独的一个方法，不依赖react，一种状态管理工具
                 安装：npm install redux
+
+                store:数据仓库，保存数据的地方；一个应用只能有一个store
+                state: state 是一个对象，数据仓库里的所有数据都放在一个state里面；
+                action: 一个动作，用来触发数据改变的方法；
+                Dispatch:将动作触发成方法
+                reducer: 一个函数，通过获取动作改变数据生成一个新的stat，从而改变页面；
 
              redux结合react必须安装插件：react-redux
                 npm install react-redux
+                redux规定：一个state对应一个view，只要state相同，view就相同，你知道state，就知道view是什么样，反之亦然。
+
+                
+
         *
-        *
+        *Flux、redux????
+
+            元素变量：
+                 button = <LogoutButton onClick={this.handleLogoutClick} />;
+                 {button}
+
+             与运算符 &&
+             在 JavaScript 中，true && expression 总是返回 expression，而 false && expression 总是返回 false。因此，如果条件是 true，&& 右侧的元素就会被渲染，如果是 false，React 会忽略并跳过它。
+             eg:
+             const messages = ['React', 'Re: React', 'Re:Re: React'];
+             {unreadMessages.length > 0 &&
+                <h2>
+                  您有 {unreadMessages.length} 条未读信息。
+                </h2>
+              }
+
+              三目运算符：
+              render() {
+                  const isLoggedIn = this.state.isLoggedIn;
+                  return (
+                    <div>
+                      {isLoggedIn ? (
+                        <LogoutButton onClick={this.handleLogoutClick} />
+                      ) : (
+                        <LoginButton onClick={this.handleLoginClick} />
+                      )}
+                    </div>
+                  );
+                }
+
+                条件渲染： 之所以能这样做，是因为在 JavaScript 中，true && expression 总是会返回 expression, 而 false && expression 总是会返回 false。
+                    render(){
+                        return(
+                            {unreadMessages.length > 0 &&
+                                <h2>
+                                  You have {unreadMessages.length} unread messages.
+                                </h2>
+                              }
+                        )
+                    }
+
+                阻止组件渲染：让 render 方法返回 null 而不是它的渲染结果即可实现。 直接把dom删除了，
+                组件的 render 方法返回 null 并不会影响该组件生命周期方法的回调。例如，componentWillUpdate 和 componentDidUpdate 依然可以被调用。
+                当你在 map() 方法的内部调用元素时，你最好随时记得为每一个元素加上一个独一无二的 key。
+
+                React中的API:
+                    设置状态：setState
+                    替换状态：replaceState
+                    设置属性：setProps
+                    替换属性：replaceProps
+                    强制更新：forceUpdate
+                    获取DOM节点：findDOMNode
+                    判断组件挂载状态：isMounted
+
+                    克隆元素：以element 元素为样板克隆并返回新的react元素，返回元素的props是将新的props与原始元素的props浅层合并的结果。亲的子元素将取代现在有的子元素，而来自原始元素的key和ref将被保留。
+                        cloneElement(
+                            element,
+                            [props],
+                            [...children]
+                        )
+
+                    isValidElement(object):验证对象是否为React元素，返回true or false
+                    React.Children: 处理this.props.children 不透明数据结果的实用方法
+                    React.Children.map(children, function[(thisArg)]) 返回一个数组
+                    React.Children.forEach(children, function[(thisArg)])
+                    React.Children.count(children) 返回children中的组件总数，等于通过map或forEach调用循环的次数
+                    React.Children.only(children)  验证children是否只有一个子节点（一个react元素），如果有则返回它，否则会抛出错误。
+                    React.Fragment:
+                    React.createRef()
+                    React.forwardRef()
+                    React.lazy  组件懒加载
+                    React.Suspense() 指定加载指示器
+
+
+                构造函数是唯一能够初始化 this.state 的地方。
+                State 的更新可能是异步的，可以让setState接收一个函数，函数上的第一个state作为第一个参数，将此次更新被应用的props作为第二个参数
+                state 可以合并更新，也可以包含几个独立更新
+
+                this.setState((state, props) => ({
+                  counter: state.counter + props.increment
+                }));
+
+                组件的生命周期可分成三个状态：
+                    1、Mounting: 已插入真实DOM
+                    2、Updating: 正在被重新渲染
+                    3、Unmounting: 已移出真实DOM
+
+                生命周期的方法有：
+                    componentWillMount: 在渲染之前调用，在客户端也在服务端；
+                    componentDidMount: 在第一次渲染后调用，只在客户端。之后组件已经生成对应的DOM结构，可以通过this.getDOMNode()来进行访问。如果你想和其它的js框架一起使用，可以在这个方法中调用setInterval\setTimeout或是发送ajax请求等操作（作用：防止异步操作阻塞UI）;
+                    componentWillReceiveProps: 组件收到一个新的props(更新后)时被调用。这个方法在初始化render时不会被调用；
+                    shouldComponentUpdate: 返回一个布尔值，在组件接收到新的props或者state时被调用。在初始化时或者使用forceUpdate时不被调用；可以在你确认不需要更新组件时使用
+                    componentWillUpdate: 在组件接收到新的props或state但还没有render时调用。初始化时不会被调用
+                    componentDidUpdate: 组件完成更新后立即调用。在初始化时不被调用
+                    componentWillUnmount: 组件从DOM中移除之前被调用
+
+
+            React创建组件的方法有三种：参考：https://www.cnblogs.com/wonyun/p/5930333.html
+                1、React.createClass():  react 16.0及以上已经废弃了
+                    创建的都是有状态的组件，会被实例化，可以访问生命周期方法。
+                    1、所有组件类都必须有自己的render方法，用于输出组件；
+                    2、组件的第一个字母在大写；
+                    3、组件类只能包含一个顶层标签；
+                    4、组件的属性可以在组件类的this.props对象上获取；
+                    eg:
+                        const Content = React.CreateClass({
+                            propTypes: { // 定义传入props中的属性各种类型
+                                initialValue: React.PropTypes.string
+                            },
+                            defaultProps: { // 组件默认的props对象
+                                initialValue: ''
+                            },
+                            getInitialState(){
+                                return {
+                                    text: this.props.initialValue || 'placeholder'
+                                }
+                            },
+                            handleChange(e) {
+                                this.setState({
+                                    text: e.target.value
+                                })
+                            },
+                            render(){
+                                return (
+                                    <div>
+                                        type something:
+                                        <input onChange={this.handleChange.bind(this) value={ this.state.text }}/>
+                                    </div>
+                                )
+                            }
+                        })
+
+
+                2、函数式定义的无状态组件：
+                    纯展示组件，只负责根据传入的props来展示，不涉及到state状态操作，只带一个render方法的组件类，
+                    特点：
+                        1、组件不会被实例化，整体渲染性能得到提升；
+                        2、组件不能访问this对象(this.ref,this.state都不能访问)；
+                        3、组件不能访问生命周期方法；
+                        4、无状态组件只能访问输入的props，同样的props会得到同样的渲染结果，不会有副作用；
+                        eg:
+                            function HelloComponent(props) {
+                                return <div className="name">{ props.name }</div>
+                            }
+                            ReactDOM.render(<helloComponent />, mounteNode)
+
+                        可通过下面这种方法访问到无状态组件的dom元素：
+                            function TestComp(props){
+                                let ref;
+                                return(
+                                    <div ref={(node) => ref = node}>.....</div>
+                                )
+                            }
+
+
+
+                3、es6形式的extends React.Component
+                    有状态的组件
+                    form.html
+                    三种绑定this的方法
+                        1、在构造函数中绑定
+                            constructor(props){
+                                super();
+                                this.handleClick = this.handleClick.bind(this);
+                            }
+
+                        2、<div onClick={this.handleClick.bind(this)}>click</div> // bind
+                        3、<div onClick={() => this.handleClick() }>click</div>  // 箭头函数
+
+                创建方法的选择：
+                    1、只要有可能，尽量使用无状态组件；
+                    2、否则(如需要state、生命周期方法等)，使用React.Component这个形式创建组件；
+
+
+               术语：
+                受控组件
+                数据不可变性：
+                    var player = {score: 1, name: 'Jeff'};
+                    var newPlayer = Object.assign({}, player, {score: 2});
+                    // player 的值没有改变, 但是 newPlayer 的值是 {score: 2, name: 'Jeff'}
+                    // 使用对象展开语法，就可以写成：
+                    // var newPlayer = {...player, score: 2};
+
+                react静态组件的编写可以是自上而下或是自下而上：
+                    自上而下：先编写层级较高的组件（最外层的组件），简单应用可以用此方法；
+                    自下而下：先编写低层级的组件，大型项目适合用此方法；
+
+                react确认最小state数据的方法： https://react.docschina.org/docs/thinking-in-react.html
+                    1、该数据是否是由父组件通过props传递而来的？如果是，那它应该不是state;
+                    2、该数据是否随时间的推移而保持不变？如果是，那它应该也不是state;
+                    3、你能否根据其他state或是props计算出该数值？如果是，那它也不是state;
+
+            react Fragment：
+                <dl>
+                    {
+                        props.items.map(item => {
+                            <Fragment key={item.id}>
+                                <dt>{item.name}</dt>
+                                <dd>{item.desc}</dd>
+                            </Fragment>
+                        })
+                    }
+                </dl>
+                如果不需要在Fragment中添加任何props并且你的工具支持的时候：可以使用短语法：
+                    <>
+                        <dt>1111111</dt>
+                        <dd>222222</dd>
+                    </>
+
+
+                react 可以通过父组件把焦点设置在子组件上
+
+                react 组件懒加载：
+                    React.lazy 目前只支持default exports，如果想要引入命名的模块，可以创建一个中间模块，来重新导出为默认模块，这能保证tree shaking 不会出错，并且不必引入不需要的组件；
+                    et:
+                        // ManyComponents.js
+                            export const myComponent=....
+                            export const myComponent1= .....
+                        // MyComponent.js
+                            export { myComponent as default } from './ManyComponents'
+
+                        // myApp.js
+                            import React, { lazy } from 'react';
+                            const myComponent = lazy(() => import('./MyComponent'));
+
+                    在OtherComponent外面使用Suspense标签，并在fallback中声明otherComponent加载完成之前做的事情，即可优化整个页面的交互；
+                    fallback属性接受任何在组件加载过程中的你想要展示的React元素，可以把Suspense组件置于懒加载组件之上的任位置，也可以用一个Suspense包含多个懒加载组件
+                    const OtherComponent = React.lazy() => import('./otherComponent');
+                    class myComponent extends React.Component {
+                        return(
+                            <Suspense fallback={<div className="loading">loading...</div>}>
+                                <OtherComponent />
+                            </Suspense>
+                        )
+                    }
+
+                Context 设置目的是为了共享那些对于一个组件对而言是“全局”的数据，例如：当前认证的用户、主题、或是首选语言等
+                    document: https://react.docschina.org/docs/context.html
+
+
+                    react-router-dom?????
+
+                错误边界：
+                    一种React组件，可以捕获并打印发生在其子组件树任务位置的javascript错误，并且，它会渲染出备用UI,而不是渲染那些崩溃了的子组件树。
+                    错误边界仅可以捕获其子组件的错误，它无法捕获其自身的犯错误，如果一个错误边界无法渲染错误信息，则错误会冒泡到最近的上层错误边界，这也类似于javascript 中的catch{} 的工作机制。
+                    只需要申明一次错误边界组件，并在整个应用中使用它。https://codepen.io/gaearon/pen/wqvxGa?editors=0010
+
+                    在事件中捕获错误使用try{}cathc{}
+                    处理捕获阶段的点击事件请使用:onClickCapture
+
+                React 高阶组件（HOC）：高阶组件的参数为组件，返回值为新组件的函数；
+
+
+                props 可以有多种方式：
+                    1、javascript 表达式
+                        <MyComponent foo = {1+2+3+4}/>
+                        条件语句及for循环不是javascript表达式，可以用在jsx以外的代码中
+                    2、字符串字面量： 值是未被转义的
+                        <MyComponent message="hello world"/>
+                        <MyComponent message={'hello world'}/>
+
+                        <MyComponent message="&lt;3"/> 是等价于  <MyComponent message={'<3'}}/>
+
+                    3、如果没有给props赋值，则默认值为true;
+                        <MyText autocomplete /> //不建议这样写，写es6的对象简写混淆
+                        等价于
+                        <MyText autocomplete={true} />
+
+                    4、属性展开：
+                        function App1(){
+                            return <Greeting firstName="Ben" lastName="Hector" />
+                        }
+                        或是
+                        function App1(){
+                            const props = { firstName: 'Ben', lastName: 'Hector' }
+                            return <Greeting {...props} />
+                        }
+
+                    5、jsx中的子元素
+                        1) 字符串字面量：
+                            <Button> Hello World!</Button>
+                            // props.children为两个标签内的内容：去掉首尾的空格及空行或是与标签相邻的空行也会被删除
+                        2) jsx 子元素
+                            <MyComponent>
+                                <MyFirstComponent />
+                                <MySecondComponent />
+                            </MyComponent>
+
+                        4) javascript 表达式作为子元素
+                            <MyComponent>foo</MyComponent>
+                            <MyComponent>{'foo'}</MyComponent>
+
+                        5)布尔类型、Null 以及 Undefined 将会忽略
+                        eg:
+                            <div />
+                            <div></div>
+                            <div>{false}</div>
+                            <div>{null}</div>
+                            <div>{undefined}</div>
+                            <div>{true}</div>
+
+
+                react Hook,是react 16.8的新特性，它可以让你在不编写class的情况下使用state以及其它的React特性
+                    Hook 向下兼容，Hook 不能在 class 组件中使用
+
+                    const Test = (props) => {  // 函数组件 或是无状态组件
+                        //你可以在这里使用HOOK
+                        return <div />;
+                    }
+                    或是
+                    function Example(props){  // 函数组件 或是无状态组件
+                        //你可以在这里使用HOOK
+                        return <div />
+                    }
+
+                    const [count,setCount] = useState(0)  // 0 是设置的默认值
+                        useState(): 会返回一对值：当前状态和一个让你更新它的函数
+                            默认值可以是不同的类型，也可以申明多个：
+                                function ExampleWithManyStates(){
+                                    const [age, setAge] = useState(42);
+                                    const [fruit, setFruit] = useState('banana');
+                                    const [dos,setDos] = useState([{text: 'learn hooks'}]);
+                                }
+
+
+
+                    Hook使用规则： hook API: https://react.docschina.org/docs/hooks-reference.html
+                        1、只在最顶层使用Hook,不要在循环、条件或是嵌套函数中调用hook,
+                        2、只在React函数中调用 hook，不要在普通的javascript函数中调用 hook，你可以在：
+                            1)在React的函数中调用hook;
+                            2)在自定义hook中调用其它的hook;
+
+                        使用 eslint-plugin-react-hooks 来强制执行这两条规则。
+
+
+                    useEffect: 视作componentDidMount、componentDidUpdate和componentWillUnmount的组合体
+                        每次 render 之后都会执行 useEffect
+                        React组件中有两种常见的副作用： http://www.ptbird.cn/react-hoot-useEffect.html#menu_index_5
+                            1、需要清理的副作用
+                                如果useEffect 返回的是一个方法，那么这个方法就是React在卸载时运行的方法，
+                                useEffect(() => {
+                                    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);
+                                    return function cleanup() {
+                                      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
+                                    };
+                                })
+                            2、不需要清理的副作用
+                            useEffect(() => {
+                                document.title = `You clicked ${count} times`;
+                              });
+
+                            可以使用多个 effect，然后将不相关的逻辑都拆分成不同的 effect。
+                            如果我们想要有条件地执行一个effect,可以将判断条件放在hook的内部；
+                               eg:
+                                useEffect(() => {
+                                    if(name !=== ''){
+                                        localstorage.setItem('formData',name)
+                                    }
+                                })
+
+                            effect的执行时机：
+
+
+                            effect也可以根据条件来更新：只有妆name更新的时候才会重新创建订阅
+                                         useEffect(() => {
+                                            document.title = 'Hello, ' + name;
+                                        }, [name]); // Our deps
+                            如果想执行只运行一次的 effect（仅在组件挂载和卸载时执行），可以传递一个空数组（[]）作为第二个参数。
+
+                                function Counter() {
+                                    const [count, setCount] = useState(0);
+                                      useEffect(() => {
+                                        const id = setInterval(() => {
+                                            setCount(preCount => preCount + 1);
+                                            // 此时setCount里面的函数的入参是前一次render之后的count值，所以这样的情况下计时器可以work
+                                        }, 1000);
+                                        // 定时器只加一次的原因在于虽然setInterval函数里面的函数每秒都会执行一次，但是count值始终是初始的0，因为这个函数绑定了第一轮render之后的count值，
+                                        return () => clearInterval(id);
+                                    }, []);
+
+                                    return <h1>{count}</h1>;
+                                }
+
+                            自定义hook，可以将组件逻辑提取到可重用的函数中，命名必须以use开头，解决了在React组件中无法灵活共享逻辑的问题
+                            https://react.docschina.org/docs/hooks-custom.html
+
+                            惰性初始 state:
+                                如果初始state需要通过复杂计算获得，则可以传入一个函数，在函数中计算并返回初始的state，此函数只在初始渲染时被调用
+                                const [state, setState] = useState(() => {
+                                    const initialState = someExpensiveComputation(props);
+                                    return initialState;
+                                });
+
+                            useContext()必传参数为context本身;
+
+
+
+                react Router: 建议在history之上的，常用的有三种模式：
+                    browserHistory  // localhost:3000/test  推荐使用
+                    hashHistory  // localhost:3000/test#/
+                    createMemoryHistory
+
+
+                React redux dispatch????
+
+                **redux: https://github.com/brickspert/blog/issues/22   Umi Hooks
+                    1、redux 和 react 没有关系，redux 可以用在任何框架中；
+                    2、connect 不属于redux，它其实属于react-redux
+                    3、先忘记reducer、store、dispatch、middleware等名词；
+                    4、redux 是一个状态管理器，状态就是数据；
+                    5、redux 可以单独使用，也可以在angl框架上使用
+
+                    总结：
+                        createStore:
+                            创建store对象，包含getState、dispatch、subscribe、replaceReducer
+                        reducer:
+                            是一个计划函数，接收旧的state和action，生成新的state
+                        action:
+                            是一个对象，必须包含type字段
+                        dispatch:
+                            实现订阅功能，每次执行dispatch的时候，会执行订阅函数
+                        combineReducer:
+                            多个reducer合并成一个reducer
+                        replaceReducer:
+                            替换reducer函数
+                        middleware:
+                            扩展dispatch函数
+                    -----------------------------------------------------
+                        **react-Router:  https://www.jianshu.com/p/6583b7258e78  https://malun666.github.io/aicoder_vip_doc/#/pages/Vip3_react_router?id=hashrouter
+                            react-router 核心组件
+                            react-router-dom: 应用于浏览器端的路由库(单独使用包含了react-router)
+                            react-router-native: 应用于native端的路由
+
+                            ReactRouter中提供的三大组件：
+                                1、Router:是所有路由组件共用的底层接口组件，它是路由规则制定的最外层容器；
+                                2、Route: 路由匹配规则，并显示当前的规则对应的组件；
+                                  exact: 作用是要求location与Route的path绝对匹配。
+                                   三种渲染方式：
+                                    1、component: 给什么就渲染什么
+                                    2、render: render的类型是function，Router会渲染这个function的返回值，因此它的作用是附加一些额外的逻辑
+                                     <Route path="/home" render={() =>{
+                                        console.log('额外的逻辑')
+                                        return(<div>Home</div>)
+                                      }
+                                     }/>
+
+                                     3、children: 这是最特殊的渲染方式 根据match函数匹配的结果渲染
+                                      <Route path='/home' children={({match}) => {
+                                        <div className={ match? 'light':'dark' }}>
+                                          { match ? <Home/> : <a> }
+                                        </div>
+                                      }} />
+
+
+                                3、Link: 路由跳转的组件
+                                   <Link to="/about" replace>about</Link>
+                                  属性：
+                                    to:
+                                      跳转的路径pathname 或 地址 location
+                                    replace:
+                                      true: 点击链接后将使用新地址替换掉访问历史记录里面的原地址；
+                                      false: 点击链接后将在原有访问历史记录的基础上添加一条新记录，默认为false；
+                                    query:
+                                      已经转化成字符串的键值对的对象
+                                    hash:
+                                      URL的hash值，如：#a-hash
+
+                                    state:
+                                      保存在location中的state
+                                    activeName:
+                                      当某个route是激活状态时，<Link>可以传入的className。失活状态下是默认的class
+                                    activeStyle:
+                                      当某个route是活动状态时，可以将样式添加到链接元素上，必须是一个对象
+                                    onClick(e):
+                                      自定义点击事件的处理方法，如处理<a>标签一样，调用e.preventDefault()来防止过度的点击，同时e.stopPropagation()可以阻止冒泡的事件。
+                                      也可以传入其它的属性，如title,id,className等
+
+                                    <Link to={{ path: "me", search:"?username=admin", hash: "#abc", state:{ msg: "hello" }} }}></Link>
+
+                                Redirect:
+                                  重定向组件 <Redirect to="/new" />
+
+                                Switch组件：
+                                  渲染匹配地址(location)的第一个，<Route>或者<Redirect>
+
+                                Prompt组件:
+                                  当用户离开当前页面的时候做出提示，当你的应用处在特定的状态，此状态不希望用户离开时(例如填写表格填到一半)
+                                    eg:
+                                      import { Prompt } from "react-router"
+                                      <Prompt
+                                        when={ formIsHalfFilledOut }
+                                        message="你确定要离开吗？"
+                                      />
+
+                                      <Prompt
+                                        message={location =>( '你确定要前往${location.pathname}吗？')}
+                                      />
+                                      message:
+                                        string: 提示语
+                                        function: 会写用户尝试前往下一个地址(location)和action一起被调用
+
+
+
+
+                                路由类型：
+                                    <BrowserRouter> 浏览器的路由组件  // localhost:3000/about
+                                      basename: 字符串类型，路由器的默认根路径；
+                                      forceRefresh: 布尔类型，在导航的过程中整个页面是否刷新
+                                      getUserConfirmation: 函数类型，当导航需要确认时执行的函数。默认是window.confirm
+                                      keyLength: 数字类型 location.key 的长度，默认是6
+                                      eg: 应用中的URL总是以 http://localhost/admin/ 开头
+                                        <BrowserRouter basename="/admin"/>
+                                            <Link to="/home"/> // 被渲染为 <a href="/admin/home">
+                                        </BrowserRouter>
+                                    ------------------------------------------------------------------------------
+                                    <hashRouter> URL格式为hash路由组件  // localhost:3000/about#/
+                                      不支持location.key和location.state
+                                      hashType: string
+                                        slash: #/ 和 #/sunshine/  默认
+                                        noSlash: # 和 #sunshine
+                                        hashbang: #! 和 #!/sunshine
+                                    ------------------------------------------------------------------------------
+
+                                    <MemoryRouter> 内存路由组件
+                                      主要是用在ReactNative 这种非浏览器的环境中，因此直接将URL的history保存在了内存中
+
+                                    ------------------------------------------------------------------------------
+                                    <NativeRouter> Native的路由组件
+                                    <StaticRouter> 地址不改变的静态路由组件
+                                      主要用服务端渲染
+
+                                    三大组件的关系：
+                                        <Router>
+                                            <Route path="路由规则" component="组件"></Route>
+                                            <Route path="路由规则" component="组件"></Route>
+                                            ......
+                                        </Router>
+
+                                react中可以使用axios 及 Reqwest(ajax)获取数据
+
+                                antd安装：
+                                  npm install antd --save-dev
+                                icon图标安装：
+                                 npm install @ant-design/icons --save-dev
+                            
+                                 antd 样式按需加载:
+                                 1.安装babel-plugin-import
+                                 2.配置: npm run eject 显示出package中的隐藏内容
+
+                                安装mysql
+                                    1.项目中要安装express 和 mysql
+
+
+
+
         *
         * */
     	let test = 'ddd';
@@ -136,6 +700,131 @@
             document.getElementById('example')
         );
     </script>
+
+<script>
+  /*
+  * 一、react特别：
+  *   1、声明式的设计；
+  *   2、高效、采用虚拟DOM的渲染，最在限度的减少DOM的操作；
+  *   3、灵活、跟其他库灵活搭配使用；
+  *   4、JSX，俗称JS里面写html,javascript语法扩展；
+  *   5、组件化、模块化、代码容易复用，2016年前大开项目非常喜欢react;
+  *   6、单向数据流，没有实现数据双向绑定，数据=> 视图 => 事件 => 数据
+  *
+  * 二、创建项目
+  *   两种方式：
+  *     1、直接使用CDN链接，仅用于学习调试使用；
+  *     2、通用react脚手架创建项目，部署
+  *       npm install create-react-app -g
+  *       create-react-app myTest
+  *
+  *   渲染：
+  *   ReactDOM.render(<App />, document.getElementById('root'))
+  *   等价于：
+  *   const app = <App />;
+  *   const root = document.getElementById('root');
+  *   ReactDOM.render(app, root);
+  *
+  *   let h1 = <h1>hello,world!</h1>,
+  *   使用jsx的语法，创建js元素对象，创建组件的时候只能有一个要节点。
+  *
+  *   JSX:javascript + XML，这是一个对象，虚拟dom，语法糖
+  *
+  *   jsx优点：
+  *     1、执行更快，编译为javascript代码时进行了优化；
+  *     2、类型更安全，编译过程如果出错就不能编译，及时发现错误；
+  *     3、编写模板更加简单快速
+  *
+  *   注意：
+  *     1、jsx必须要有一个根节点；
+  *     2、正常的html标签要小写，如果首字母大写默认为是一个组件；
+  *
+  *   JSX表达式：
+  *     1、由HTML元素构成；
+  *     2、中间如果需要插入变量使用{}；
+  *     3、{}中可以使用表达式；
+  *     4、{}表达式中可以用jsx对象；
+  *     5、属性和 HTML 内容都是用{}来插入内容；
+  *
+  *   JSX中样式：不能用class，只能用className，因为class为react中的关键字
+  *     className={}
+  *
+  *   reactDOM会负责更新DOM来与React元素保持一致；只更新已改变的元素
+  *
+  *   循环过滤：
+  *     1、循环必须要用map
+  *     2、循环绑定的JSX元素，必须要绑定不同的key来区分不同的元素，否则会报错、
+  *
+  *   react 核心思想是组件化开发，它其实就是玩javascript
+  *     组件声明方式有两种:
+  *       1、一种是函数式声明
+  *         方法名称首字母必须要大写；
+  *         必须有返回值
+  *       2、另一种是类声明 es6的模式，实际项目中运用比较多的方式
+  *         React.Component 它是一个基类，使用类声明的组件，必须继承这个基类
+  *         在类中必须要有render函数，必须要用返回dom
+*           constructor不是必须的，如果有则必须要用props
+*           组件要以大写字母开关；
+
+        复用组件：
+            1、将多个组件进行整合，重复调用相同的组件；
+            2、结构非常复杂时需要将组件拆分成小组件；
+            3、会存在父子关系数据传递；
+
+        父子组件传值：
+            父组件 => 子组件：通过props向下传递
+        
+            子组件 => 父组件：通过在父组件中定制方法
+
+            解决this指向问题：
+                1、方法使用箭头函数;(推荐)
+                2、在constructor中绑定
+                    constructor(props){
+                        super(props);
+                        this.add = this.add.bind;
+                    }
+                3、onClick = {this.add.bind(this)}
+                4、onClick= { (e)=> this.add(e) }
+            
+        react 有两种数据来源：
+            1、props传进来的
+            2、自身的管理状state，只有类声明的组件才有state
+                除了constructor以外的地方修改state，都必须通过setState方法来修改，在constructor里面则可以直接修改
+            ***setState 是一个异步操作，所有要用一个箭头函数方法
+
+        react 生命周期：
+            componentDidMount: 一般在这里请求数据
+            shouldComponentUpdate: 性能优化点，非常重要
+        
+        受控组件：
+            受状态控件的组件，需要与状态进行相应的绑定
+
+        表单：分为受控组件和非受控组件
+
+        react 插槽：
+            组件中写入内容，这些内容可以被识别和控制，react中的插槽需要自己开发支付插槽功能，vue则是自带插槽功能；
+            原理：组件中写入html，可以传入到props中；
+            Slot.js
+
+        react 路由：
+            安装：npm install react-router-dom
+
+
+    React 高阶：
+        1、react-hooks:
+            hooks翻译过来被称为钩子，钩子函数也是一种编程思想，我们一般把这种思想称之为AOP编程思想(面向切面编程);
+            编程的方式：
+            1、面向过程(一个一个的函数调用 )
+            2、面向对象(对象的特点：对象、抽象、封装、多态)
+            3、AOP编程(面向切面编程vue.js、react)
+
+    node 链接数据库
+    
+                    
+
+  *
+  * */
+</script>
 
 </body>
 </html>
