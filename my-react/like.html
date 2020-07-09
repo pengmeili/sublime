@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <title>like-button</title>
+  <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+  <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script> <!-- 解析jsx文件 -->
+  <script type="text/babel">
+    class LikeButton extends React.Component{
+      constructor() {
+        super();
+        this.state = { liked: false }
+      }
+      handleClick(e) {
+        console.log(e)
+        this.setState({liked: !this.state.liked})
+      }
+      render() {
+        const text = this.state.liked?'like': 'haven\'t liked';
+        return (
+          <p onClick={this.handleClick.bind(this)}>
+            You { text } this. Click to toggle.
+          </p>
+        )
+      }
+    }
+
+    ReactDOM.render(
+      <LikeButton />,
+      document.getElementById('test')
+    )
+  </script>
+</head>
+<body>
+  <div id="test"></div>
+</body>
+</html>

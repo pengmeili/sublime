@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <title>通过父组件获取子组件的焦点</title>
+  <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+  <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script> <!-- 解析jsx文件 -->
+  <script type="text/babel">
+    class CustomTextInput extends React.Component{
+      render() {
+        return(
+          <div>
+            <input ref={this.props.inputRef} />
+          </div>
+        )
+      }
+    }
+
+    class Parent extends React.Component {
+      constructor(props) {
+        super(props);
+        this.inputElement = React.createRef();
+      }
+
+      componentDidMount() {
+        this.inputElement.current.focus();
+      }
+
+      handleClick(e) {
+        this.inputElement.current.focus();
+      }
+
+      render() {
+        return (
+          <div>
+            <h3 onClick={this.handleClick.bind(this)}>点击我</h3>
+            <CustomTextInput inputRef={this.inputElement}/>
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(
+      <Parent />,
+      document.getElementById('main')
+    )
+
+  </script>
+</head>
+<body>
+  <div id="main"></div>
+</body>
+</html>

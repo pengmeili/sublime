@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <title>组合组件</title>
+  <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+  <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script> <!-- 解析jsx文件 -->
+  <script type="text/babel">
+    const ProfilePic = (props) => {
+      return (
+        <img src={'http://himg.bdimg.com/sys/portrait/item/2fdc7869616f68656935313831000a.jpg?username='+props.username}/>
+      )
+    }
+
+    const ProfileLink = (props) => {
+      return (
+        <a target="_blank" href={'https://passport.baidu.com/v6/ucenter?_t=1587438713&username='+ props.username}>个人中心</a>
+      )
+    }
+
+    const Avatar = (props) => {
+      return(
+        <div>
+          <ProfilePic username={props.username}/>
+          <ProfileLink username={props.username}/>
+        </div>
+      )
+    }
+
+    ReactDOM.render(
+      <Avatar username="pengmeili"/>,
+      document.getElementById('ad')
+    )
+  </script>
+</head>
+<body>
+  <div id="ad"></div>
+</body>
+</html>

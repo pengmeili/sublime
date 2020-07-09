@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <title>计时器-生命周期</title>
+  <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+  <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script> <!-- 解析jsx文件 -->
+  <script type="text/babel">
+    const FormatDate = (props) => {
+      return(
+        <h2>现在是{ props.date.toLocaleTimeString() }</h2>
+      )
+    }
+
+    class Clock extends React.Component {
+      constructor(props){
+        super(props);
+        this.state = { date: new Date }
+      }
+
+      // 当元素挂载完成时生成一个定时器
+      componentDidMount(){
+        this.timeID = setInterval(() => this.tick(), 1000)
+      }
+
+      // 当元素被卸载时清除定时器
+      componentWillUnmount() {
+        clearInterval(this.timeID);
+      }
+
+      tick() {
+        this.setState({
+          date: new Date()
+        })
+      }
+
+      render() {
+        return(
+          <div>
+            <h1>hello, world!</h1>
+            <FormatDate date={this.state.date} />
+          </div>
+        )
+      }
+    }
+
+    class ClockList extends React.Component {
+      render(){
+        return (
+          <div>
+            <Clock />,
+            <Clock />,
+            <Clock />
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(
+      <ClockList />,
+      document.getElementById('main')
+    )
+  </script>
+</head>
+<body>
+<div id="main"></div>
+</body>
+</html>

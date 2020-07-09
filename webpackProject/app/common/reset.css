@@ -1,0 +1,27 @@
+html, body, div, section, header, aside, footer, ol, ul, li, p, h1, h2, h3, h4, h5, h6 {
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  background: #fff;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+ol li, ul li {
+  list-style: none;
+}
+
+.flex-div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.test {
+  background: #00AD72;
+}
+/*# sourceMappingURL=reset.css.map */

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <title>ref and findDOMNode 等各种操作dom的方法</title>
+  <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+  <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script> <!-- 解析jsx文件 -->
+<!--  <script type="text/babel">-->
+<!--    class App extends React.Component {-->
+<!--      constructor() {-->
+<!--        super();-->
+<!--        this.state= { userInput: '' }-->
+<!--      }-->
+<!--      handleChange(e){-->
+<!--        this.setState({ userInput: e.target.value })-->
+<!--        const { target } = e-->
+<!--        target.style.background = '#fff'-->
+<!--      }-->
+<!--      clearAndFocusInput(){-->
+<!--        this.setState({userInput: ''},() => {-->
+<!--          this.refs.theInput.focus()-->
+<!--          this.refs.theInput.removeAttribute('style')-->
+<!--        })-->
+<!--      }-->
+
+<!--      render(){-->
+<!--        return (-->
+<!--          <div>-->
+<!--            <button onClick={this.clearAndFocusInput.bind(this)}>reset</button>-->
+<!--            <input-->
+<!--              className="input"-->
+<!--              ref="theInput"-->
+<!--              value={this.state.userInput}-->
+<!--              onChange={this.handleChange.bind(this)}-->
+<!--            />-->
+<!--          </div>-->
+<!--        )-->
+<!--      }-->
+<!--    }-->
+
+<!--    ReactDOM.render(-->
+<!--      <App />,-->
+<!--      document.getElementById('main')-->
+<!--    )-->
+<!--  </script>-->
+  <script type="text/babel">
+    class Element extends React.Component{
+      click1(e) {
+        const inputs = document.querySelector('input');
+        //通过原始方法修改样式
+        inputs.style.backgroundColor = 'deeppink';
+        //使用findDOMNode操作DOM
+        ReactDOM.findDOMNode(inputs).style.color = '#fff'
+      }
+
+      //2.通过事件代理来实现DOM操作
+      click2(e){
+        const { target } = e;
+        target.style.backgroundColor = '#90f'
+      }
+      click3(){
+        console.log(this) //this.refs内就是存放所有使用ref标记的内容
+        this.refs.btn.style.backgroundColor = '#f0f';
+        this.refs.btn.style.color = 'white'
+      }
+
+      //4.ref属性来实现DOM操作(函数式的引用方式-常用的)
+      click4(e){
+        console.log(this.list) //ref内可以直接在组件this内的属性内存入标签
+        this.list.style.color = 'white';
+        this.list.style.backgroundColor = '#f03'
+      }
+      click5(e){
+        console.log(ReactDOM.findDOMNode(this.aaa)) // 打印是一个节点 <div>div标签以及其它标签都可以</div>
+        ReactDOM.findDOMNode(this.aaa).style.backgroundColor = '#f03';
+        this.aaa.style.color = '#fff'
+      }
+
+      render(){
+        return (
+          <div>
+            <input type="button" value='通过js来操作DOM' onClick={this.click1.bind(this)}/>
+            <input type="button" value='通过事件代理e来实现DOM操作' onClick={this.click2.bind(this)}/>
+            <input ref={'btn'} type="button" value='ref属性：字符串的方法来进行标记' onClick={this.click3.bind(this)}/>
+            {/* 注释 */}
+            <input ref={(e) => { this.list = e}} type="button" value='ref属性：函数式的引用方式' onClick={this.click4.bind(this)}/>
+            <div ref={ (e) => { this.aaa = e }} onClick={this.click5.bind(this)}>div标签以及其它标签都可以</div>
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(
+      <Element />,
+      document.getElementById('main')
+    )
+
+  </script>
+</head>
+<body>
+  <div id="main"></div>
+</body>
+</html>

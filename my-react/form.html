@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <title>form</title>
+  <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+  <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script> <!-- 解析jsx文件 -->
+  <script type="text/babel">
+    // input text  React.Component方法
+    class Content extends React.Component {
+      render(){
+        return(
+          <div>
+            <div>input框：</div>
+            <input value={this.props.value} type="text" onChange={this.props.updateState}/>
+            <button onClick={ this.props.resetState }>重置</button>
+            <p>您输入的值为：{ this.props.value }</p>
+          </div>
+        )
+      }
+    }
+
+    class InputText extends React.Component {
+      constructor(){
+        super();
+        this.state = { inputText: '' }
+      }
+
+      inputTextChange(e){
+        this.setState({ inputText: e.target.value })
+      }
+
+      resetInput() {
+        this.setState({ inputText: '' })
+      }
+
+      render(){
+        var value = this.state.inputText;
+        return(
+          <div>
+            <Content value={value} updateState = { this.inputTextChange.bind(this) } resetState={ this.resetInput.bind(this) } />
+          </div>
+        )
+      }
+    }
+
+    // select
+    class SelectForm extends React.Component {
+      constructor(props) {
+        super();
+        this.state = ({ value: '' })
+      }
+
+      selectChange(e) {
+        this.setState({
+          value: e.target.value
+        })
+      }
+
+      doSubmit(event) {
+        alert("You selected value is:" + this.state.value);
+        event.preventDefault();
+      }
+
+      render() {
+        return (
+          <form>
+            <label>
+              选择您喜欢的网站：
+              <select value={ this.state.value } onChange={ this.selectChange.bind(this) }>
+                <option value="gg">google</option>
+                <option value="bd">baidu</option>
+                <option value="bi">bings</option>
+                <option value="fb">facebook</option>
+              </select>
+              <button onClick={ this.doSubmit.bind(this) }>提交</button>
+            </label>
+          </form>
+        )
+      }
+    }
+
+    // 多个类型的input元素，可以通过每个元素的name属性，用同一个处理函数根据event.target.name的值来选择做什么
+    class MoreForm extends React.Component {
+      constructor(props){
+        super();
+        this.state = ({
+          isChecked: true,
+          numberOffGuest: 2
+        })
+      }
+
+      oneHandle(e){
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked: target.value;
+        const name = target.name;
+
+        console.log(name, value)
+        this.setState({
+          [name]: value
+        })
+      }
+
+
+      render() {
+        return (
+          <form>
+            <label>
+              是否离开：
+              <input
+                name="isChecked"
+                type="checkbox"
+                checked={ this.state.isChecked }
+                onChange={this.oneHandle.bind(this)}
+              />
+            </label>
+            <label>
+              访客数：
+              <input
+                name="numberOffGuest"
+                type="text"
+                value={ this.state.numberOffGuest }
+                onChange={ this.oneHandle.bind(this) }
+              />
+            </label>
+          </form>
+        );
+      }
+    }
+
+    class Form extends React.Component {
+      render() {
+        return(
+          <div>
+            <InputText />
+            <SelectForm />
+            <MoreForm />
+          </div>
+        )
+      }
+    }
+
+
+    ReactDOM.render(
+      <Form />,
+      document.getElementById('form')
+    )
+  </script>
+</head>
+<body>
+  <div id="form"></div>
+</body>
+</html>

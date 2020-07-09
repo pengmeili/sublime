@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <title>props 传递展开运算符</title>
+  <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+  <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script> <!-- 解析jsx文件 -->
+  <script type="text/babel">
+    const Button = props => {
+      const { kind, ...other } = props;
+      console.log(other) //{color: "blue", children: "Hello World!", onClick: ƒ}
+      const className = kind === 'primary' ? "PrimaryButton" : "SecondaryButton";
+      return <button className={className} {...other} /> // kind 没有传递给button
+    }
+    const App = () => {
+      return(
+        <div>
+          <Button kind="primary" color="blue" onClick={() => console.log("clicked")}>
+            Hello World!
+          </Button>
+        </div>
+      )
+    }
+
+    ReactDOM.render(
+      <App />,
+      document.getElementById("main")
+    )
+  </script>
+</head>
+<body>
+  <div id="main"></div>
+</body>
+</html>

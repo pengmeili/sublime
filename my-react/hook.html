@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <title>react hook</title>
+  <script src="https://cdn.bootcss.com/react/16.13.1/cjs/react.development.js"></script>
+  <script src="https://cdn.bootcss.com/react-dom/16.13.1/cjs/react-dom.development.min.js"></script>
+  <script src="https://cdn.bootcss.com/babel-standalone/7.0.0-beta.3/babel.min.js"></script> <!-- 解析jsx文件 -->
+  <script type="text/babel">
+    function Example() {
+      const [count, setCount] = React.useState[0];
+
+      return (
+        <div>
+          <p>You clicked { count } times.</p>
+          <button onClick={() => setCount(count+1)}>click</button>
+        </div>
+      )
+    }
+  </script>
+</head>
+<body>
+
+</body>
+</html>

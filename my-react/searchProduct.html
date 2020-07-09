@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <title>搜索商品</title>
+  <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+  <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script> <!-- 解析jsx文件 -->
+  <link rel="stylesheet" href="reset.css">
+  <style>
+    .wrapper{
+      width: 200px;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+    .search-wrap input[type=text]{
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      padding: 0 10px;
+    }
+    .pro-table{
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    .pro-table th,.pro-table td{
+      height: 22px;
+      line-height: 22px;
+      text-align: left;
+    }
+    .pro-table thead{
+      font-weight: bold;
+    }
+    .pro-table .red{
+      color: #f00;
+    }
+  </style>
+  <script type="text/babel">
+    const PRODUCTS = [
+      {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
+      {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
+      {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
+      {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
+      {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
+      {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+    ];
+
+    // FilterableProductTable、SearchBar、ProductTable、ProductCategoryRow、 ProductRow
+    class ProductRow extends React.Component {
+      render() {
+        const product = this.props.product;
+        const name = product.stocked ?
+          product.name:
+          <span className="red">
+            { product.name }
+          </span>;
+
+        return(
+          <tr>
+            <td>{name}</td>
+            <td>{product.price}</td>
+          </tr>
+          )
+      }
+    }
+
+    class ProductCategoryRow extends React.Component {
+      render() {
+        return(
+          <tr>
+            <th colSpan="2">{ this.props.category }</th>
+          </tr>
+          )
+      }
+    }
+
+    class ProductTable extends React.Component {
+      render(){
+        const filterText = this.props.filterText;
+        const inStockOnly = this.props.inStockOnly;
+
+        const rows = [];
+        let lastCategory = null;
+
+        this.props.products.forEach((product) => {
+
+          if(product.name.indexOf(filterText) === -1) {
+            return;
+          }
+
+          if(inStockOnly && !product.stocked) {
+            return;
+          }
+
+          if(product.category !== lastCategory) {
+            rows.push(
+              <ProductCategoryRow
+                category={product.category}
+                key={ product.category }
+              />
+            )
+          }
+          rows.push(
+            <ProductRow
+              product={product}
+              key={product.name}
+            />
+          )
+          lastCategory = product.category
+        })
+        return(
+          <table className="pro-table">
+            <thead>
+              <tr>
+                <td>Name</td>
+                <td>Price</td>
+              </tr>
+            </thead>
+            <tbody>{rows}</tbody>
+          </table>
+        )
+      }
+    }
+
+    class SearchBar extends React.Component {
+
+      handleFilterTextChange(e) {
+        this.props.onFilterTextChange(e.target.value)
+      }
+
+      handleInStockChange(e) {
+        this.props.onIsStockChange(e.target.checked)
+      }
+
+      render(){
+        const filterText = this.props.filterText;
+        const inStockOnly = this.props.inStockOnly;
+        return (
+          <form className="search-wrap">
+            <input
+              type="text"
+              placeholder="search"
+              value={ filterText }
+              onChange= {this.handleFilterTextChange.bind(this)}
+            />
+            <p>
+              <input
+                type="checkbox"
+                id="check1"
+                checked={ inStockOnly }
+                onChange={ this.handleInStockChange.bind(this) }
+              />Only show product in stock
+            </p>
+          </form>
+        )
+      }
+    }
+
+    class FilterableProductTable extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          filterText: '',
+          inStockOnly: false
+        }
+      }
+
+      handleFilterTextChange(filterText) {
+        this.setState ({
+          filterText: filterText
+        })
+      }
+
+      handleIsStockChange(inStockOnly){
+        this.setState({
+          inStockOnly: inStockOnly
+        })
+      }
+
+      render() {
+        return (
+          <div>
+            <SearchBar
+              filterText={ this.state.filterText }
+              inStockOnly={ this.state.inStockOnly }
+              onFilterTextChange={ this.handleFilterTextChange.bind(this) }
+              onIsStockChange={ this.handleIsStockChange.bind(this) }
+            />
+            <ProductTable
+              products={this.props.products}
+              filterText={ this.state.filterText }
+              inStockOnly={ this.state.inStockOnly }
+            />
+          </div>
+        );
+      }
+    }
+
+    ReactDOM.render(
+      <FilterableProductTable products={PRODUCTS} />,
+      document.getElementById('container')
+    )
+  </script>
+</head>
+<body>
+  <div class="wrapper">
+    <div id="container"></div>
+  </div>
+<!--  <div class="wrapper">-->
+<!--    <form class="search-wrap">-->
+<!--      <input type="text" placeholder="search">-->
+<!--      <label for="check1"><input type="checkbox" id="check1">Only show product in stock</label>-->
+<!--    </form>-->
+<!--    <table class="pro-table">-->
+<!--      <thead>-->
+<!--      <tr>-->
+<!--        <td>Name</td>-->
+<!--        <td>Price</td>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--      <tr>-->
+<!--        <th colspan="2">分类</th>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td>1111</td>-->
+<!--        <td>1111</td>-->
+<!--      </tr>-->
+<!--      </tbody>-->
+<!--    </table>-->
+<!--  </div>-->
+</body>
+</html>
