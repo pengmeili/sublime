@@ -6,13 +6,11 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import store from './store/data'
 import App from './view/App'
-import Dati from './view/Dati'
 
 ReactDOM.render(
     <Provider store={store}>
       <Router>
-        <Route path="/" exact component={App} />
-        <Route path="/dati" component={Dati} />
+        <Route path="/" component={App} />
       </Router>
     </Provider>,
     document.querySelector('#root')

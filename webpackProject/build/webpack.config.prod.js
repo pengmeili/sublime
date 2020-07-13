@@ -19,13 +19,6 @@ module.exports = merge(common, {
       'process.env': env
     }),
     new AliOss({
-      auth: {
-        accessKeyId: 'LTAIkxB1wgJhIaGo',
-        accessKeySecret: 'EPu1tJmFzroryHZVPM4Kdoyg4yZkAy',
-        region: 'oss-cn-beijing',
-        // region: "oss-cn-beijing-internal",
-        bucket: 'pcsd-zhihui-dl',
-      },
       ossBaseDir: ossBaseDir,
       project: project,
       exclude: /sw\.js$|\.(html|txt)$/,
