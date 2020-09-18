@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>webapck</title>
+  <script>
+    /*
+      ## webpack4 安装：
+        -npm install webpack webpack-cli -D
+
+      ## webpack 默认0配置：
+        -打包工具-输出后的结果
+        - npx webpack
+        - 指定配置文件
+          npx webpack --config webpack.config.my.js
+
+      ## 手动配置webpack
+       -默认配置的文件叫 webpck.config.js
+       -webpack 是 node 写出来的，所以要使用node 的写法
+       -webpack-dev-server 只是在内存中打包
+       -css 抽离： mini-css-extract-plugin
+        optimize-css-assets-webpack-plugin 压缩优化css，只在production环境下生效
+        TerserWebpackPlugin  压缩优化js，只在production环境下生效
+       -css3 自动添加前缀：postcss-loader autoprefixer  在解析css 之前加上
+       并且要在根目录下添加postcss.config.js 配置 并在package.json 中添加 browserslist
+       -js 相关插件：
+        - babel-loader 加载器
+        - @babel/core 核心模块
+        - @babel/preset-env 语法转换
+        - @babel/plugin-proposal-class-properties  es7 高级语法转换  babel-loader 8.0以上不用这个插件就能转es7以上的语法
+        - @babel/plugin-proposal-decorators 支持es7里使用装饰器写法
+        - @babel/plugin-transform-runtime  解析 generator 语法 + @babel/runtime 一起使用
+        - @babel/polyfill --save 解析模块
+
+        - eslint eslint-loader --save
+          必须要放在普通的loader后面，也可以加参数强制在普通loader前面执行
+            enforce: pre
+
+        - 全局变量
+          - expose-loader --save-dev 显露全局的loader  内联loader
+            pre 前面执行的loader
+            normal loader
+            post 后置loader
+         - 在每个模块中注入jquery,不用require,直接使用
+
+        - 引入三方模块的三种方式:
+          1) expose-loader  暴露到全局window上
+          2) providePlugin 给每个模块提供一个$
+          3) 通过绝对路径引入不打包
+            externals: {
+              jquery: "$"
+            }
+
+        - 打包图片
+            1) 在js中创建图片引入
+              file-loader/ url-loader 可以限制大小及转成base64, 两者结合使用
+            2) 在css中引入 background
+              - css 中引用的图片是通过css-loader加载的
+            3) html <img />标签引入
+              html-withing-loader
+
+        - devtools 查看错误日志，源码映射
+            - devtool:"source-map": 单独生成一个sourcemap文件，会标识当前报错的列和行, 大而全
+            - devtool:"eval-source-map": 不生成单独的一个sourcemap文件，可以显示行和列，会把错误信息放在打包后的js文件后面
+            - devtool: "cheap-module-source-map" 产生行的一个单独映射文件，
+            - devtool: "cheap-module-eval-source-map"  不会产生文件， 集成在打包后的文件中，不会产生列
+
+        - watch使用
+          watch: true 自动完成打包
+          watchOptions: {
+            poll: 1000  // 每秒询问1000次
+            aggregateTimeout: 300  防抖 在设置的时间段内聚合到一次重构
+            ignored: /node_modules/  不需要监控的文件
+          }
+
+        - webpack 小插件
+          - cleanWebpackPlugin  清除打包后的文件  默认路径为 output 路径
+          - friendly
+          - copyWebpackPlugin  copy 一些不需要通过 webpack 打包的资源
+          - bannerPlugin  内置 版权声明插件 插入到js文件最前面
+          - require.context  ????
+
+        - webpack 解决跨域问题
+          proxy
+          before(){}
+          webpack-dev-middleware
+
+        -resolve: {
+          modules: [path.resolve('node_modules')],
+          extensions: ['.js', '.css', '.json', '.vue'] // 按顺序依次查找
+          mainFields: ['style', 'main']
+          mainFiles: [] // 入口文件的名字
+          alias: { // 别名
+            bootstrap: 'bootstrap/dist/css/bootstrap.css'
+          }
+        }
+
+      - 环境变量：
+        webpack 自带的插件  webpack.DefinePlugin({
+          DEV: JSON.stringify('dev')
+        })
+
+      - 区分环境
+        -webpack-merge
+
+      webpack 优化点：
+        - noParse 不去解析jquery中的依赖关系
+        - exclude: 不包含的文件
+        - include: 包含的文件
+        - webpack.ignorePlugin 忽略掉哪些包
+        - webpack.DllPlugin() 动态链接库
+        - webpack.DllReferencePlugin()
+        - happypack 多线程打包
+
+      - 抽离共公代码
+
+
+
+    pug 模板？？？？
+    */
+  </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "webpack-project2",
+  "version": "1.0.0",
+  "description": "webpack 打包多页应用",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env BABEL_ENV=development webpack-dev-server --inline --progress --config webpack.dev.js",
+    "build": "cross-env NODE_ENV=production env_config=prod webpack --config webpack.prod.js"
+  },
+  "author": "pengml1",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "babel-loader": "^8.1.0",
+    "copy-webpack-plugin": "^6.0.3",
+    "cross-env": "^7.0.2",
+    "html-webpack-plugin": "^4.3.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.1.1"
+  }
+}
