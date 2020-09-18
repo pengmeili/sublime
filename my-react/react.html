@@ -46,14 +46,18 @@
 
             type="text/babel" ：浏览器不会解析这里面的代码，而是babel.js读取这里面的内容，然后生成浏览器可识别的js代码
 
-        * jsx：
+        * jsx：对象，虚拟DOM元素
         *   javascript XML
         *   基于javascript的语言，融合了XML，我们可以在js中书写XML
         *   XML中可以包含子元素，但是结构中只能有一个顶级元素
             支持插值表达式 {表达式}
         *
         * ReactDom.render(需要渲染的内容, 放置内容的容器)
-        *   容器不能是body
+        *   容器不能是body,
+        *   react 只更新已更改的元素，节省最小的开支
+        *   function tick(params) {
+            
+            }
         *
         * 插值表达式：
         *   字符串
@@ -757,14 +761,27 @@
   *
   *   react 核心思想是组件化开发，它其实就是玩javascript
   *     组件声明方式有两种:
-  *       1、一种是函数式声明
+  *       1、一种是函数式声明  本质是函数
   *         方法名称首字母必须要大写；
   *         必须有返回值
+  *         function Welcome(props) {
+                return <h1>welcome,{ props.name }</h1>
+            }
+            ReactDOM.render(<Welcome name="xiaohei" />, document.querySelector('#root'));
+  *     
   *       2、另一种是类声明 es6的模式，实际项目中运用比较多的方式
   *         React.Component 它是一个基类，使用类声明的组件，必须继承这个基类
-  *         在类中必须要有render函数，必须要用返回dom
+  *         在类中必须要有render函数，必须要用返回一个jsx元素
 *           constructor不是必须的，如果有则必须要用props
 *           组件要以大写字母开关；
+
+            class App extends React.Component {
+            // 必须使用render函数，能将虚拟DOM渲染成真实DOM
+                render() {
+                    return <h2>App，{ this.props.name }</h2>
+                }
+            }
+            ReactDOM.render(<App name="你好"/>, document.querySelector('#root'));
 
         复用组件：
             1、将多个组件进行整合，重复调用相同的组件；
@@ -778,6 +795,7 @@
 
             解决this指向问题：
                 1、方法使用箭头函数;(推荐)
+                * add =()=> {}
                 2、在constructor中绑定
                     constructor(props){
                         super(props);
@@ -794,8 +812,8 @@
 
         react 生命周期：
             componentDidMount: 一般在这里请求数据
-            shouldComponentUpdate: 性能优化点，非常重要
-        
+            shouldComponentUpdate: 性能优化点，非常重要，此方法一定要有返回值
+
         受控组件：
             受状态控件的组件，需要与状态进行相应的绑定
 

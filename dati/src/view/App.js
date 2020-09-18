@@ -8,6 +8,7 @@ class Home extends React.Component {
         <div>
            <Button onClick={this.goDatiPage}>随时答题</Button>
            <Button>闯关答题</Button>
+           <Button>抽奖答题</Button>
         </div>
     );
   }
